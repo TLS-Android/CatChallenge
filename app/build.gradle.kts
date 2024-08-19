@@ -64,6 +64,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter)
 
+    implementation(libs.okhttp)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp.loggingInterceptor)
+    implementation(libs.okhttp.brotli)
+
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.android)
