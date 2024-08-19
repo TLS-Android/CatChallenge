@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.room.testing)
     implementation(libs.google.gson)
     implementation(libs.glide)
+    implementation(libs.retrofit)
 
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
