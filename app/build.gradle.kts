@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.google.gson)
     implementation(libs.glide)
     implementation(libs.retrofit)
+    implementation(libs.converter)
 
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
