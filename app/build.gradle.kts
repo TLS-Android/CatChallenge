@@ -64,6 +64,19 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter)
 
+    // COMPOSE
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.compose.animation.graphics)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.ui)
+
     implementation(libs.okhttp)
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp.loggingInterceptor)
