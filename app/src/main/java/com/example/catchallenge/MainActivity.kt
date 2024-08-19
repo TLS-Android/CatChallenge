@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.ui.navigation.BottomNavigationBar
+import com.example.catchallenge.ui.navigation.Navigation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ fun CatChallengeApp() {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
-        androidx.navigation.Navigation(
+        Navigation(
             navController = navController,
             modifier = Modifier.padding(innerPadding)
         )
