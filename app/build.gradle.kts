@@ -39,6 +39,11 @@ android {
     buildFeatures {
         compose = true
     }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
+    }
 }
 
 dependencies {
@@ -52,16 +57,17 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.android.compiler)
-    implementation(libs.hilt.android.testing)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.testing)
     implementation(libs.google.gson)
     implementation(libs.glide)
     implementation(libs.retrofit)
     implementation(libs.converter)
+
+    implementation(libs.glide.compose)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // COMPOSE
     implementation(platform(libs.androidx.compose.bom))
@@ -76,7 +82,8 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
-
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
     implementation(libs.okhttp)
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp.loggingInterceptor)

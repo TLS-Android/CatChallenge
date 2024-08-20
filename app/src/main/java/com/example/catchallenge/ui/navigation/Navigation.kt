@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -19,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.ui.screens.detail.DetailScreen
+import com.example.catchallenge.ui.screens.detail.DetailViewModel
 import com.example.catchallenge.ui.screens.favourites.FavouritesScreen
 import com.example.catchallenge.ui.screens.overview.OverviewScreen
 
@@ -42,9 +44,26 @@ fun NavigationComponent(
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = Screen.Overview.route) {
-        composable(Screen.Overview.route) { OverviewScreen() }
-        composable(Screen.Favourites.route) { FavouritesScreen() }
-        composable(Screen.Detail.route) { DetailScreen() }
+        composable(Screen.Overview.route) {
+            OverviewScreen(
+                catBreeds = TODO(),
+                overviewViewModel = TODO()
+            )
+        }
+        composable(Screen.Detail.route + "/{breedId}") { backStackEntry ->
+            val breedId = backStackEntry.arguments?.getString("breedId")
+            val detailViewModel = viewModel<DetailViewModel>()
+            val breed = detailViewModel.getBreedById(breedId!!)
+            DetailScreen(
+                breed = breed,
+                onToggleFavorite = { detailViewModel.toggleFavorite(breed) },
+                detailViewModel = detailViewModel
+            )
+        }
+        composable(Screen.Favourites.route) { FavouritesScreen(
+            favouritesViewModel = TODO()
+        )
+        }
     }
 }
 

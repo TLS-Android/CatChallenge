@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class OverviewViewModel @Inject constructor(
+class FavouritesViewModel @Inject constructor(
     private val catBreedRepository: CatBreedRepository
 ) : ViewModel() {
 

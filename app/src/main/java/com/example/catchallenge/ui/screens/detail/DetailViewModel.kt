@@ -25,8 +25,16 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun getCatBreed(breedId: String) {
+    fun getCatBreed(breedId: String) {
         //TODO()
+    }
+
+    fun toggleFavorite(breed: Any) {
+        TODO("Not yet implemented")
+    }
+
+    fun getBreedById(breedId: String): CatBreed {
+        TODO("Not yet implemented")
     }
 
 }

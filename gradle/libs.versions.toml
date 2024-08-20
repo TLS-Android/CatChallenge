@@ -1,6 +1,6 @@
 [versions]
-agp = "8.7.0-alpha07"
-kotlin = "2.0.0"
+agp = "8.5.2"
+kotlin = "2.0.10"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -15,7 +15,7 @@ androidxHiltNavigationCompose = "1.2.0"
 androidx-room = "2.6.1"
 google-gson = "2.10.1"
 dagger = "2.51.1"
-glide = "4.13.0"
+glide = "4.16.0"
 
 mockito = "4.8.1"
 mockito-kotlin = "4.0.0"
@@ -23,8 +23,10 @@ mockito-kotlin = "4.0.0"
 retrofit = "2.10.0"
 okhttp = "4.12.0"
 
-kspVersion = "1.9.20-1.0.14"
+kspVersion = "2.0.10-1.0.24"
 hiltVersion = "2.51.1"
+
+glideCompose = "1.0.0-alpha.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,7 +42,9 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "google-gson" }
+
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glideCompose" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
@@ -56,9 +60,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 
 #Dependency injection
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hiltVersion"}
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "hiltVersion"}
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
