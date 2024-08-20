@@ -34,10 +34,8 @@ fun CatBreed.toCatBreedEntity(): CatBreedEntity {
     return CatBreedEntity(
         id = id,
         name = name,
-        origin = origin,
         temperament = temperament,
         description = description,
-        lifespan = lifespan,
         imageUrl = imageUrl,
         isFavourite = isFavourite
     )
@@ -47,10 +45,8 @@ fun CatBreedEntity.toCatBreed(): CatBreed {
     return CatBreed(
         id = id,
         name = name,
-        origin = origin,
         temperament = temperament,
         description = description,
-        lifespan = lifespan,
         imageUrl = imageUrl,
         isFavourite = isFavourite
     )

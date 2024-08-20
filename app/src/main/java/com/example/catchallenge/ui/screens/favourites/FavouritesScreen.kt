@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.domain.model.CatBreed
 import com.example.catchallenge.ui.screens.overview.CatBreedItem
 
@@ -37,6 +38,7 @@ fun FavouritesScreen(
         CatBreed("10", "Breed 10"),
     )
 ) {
+    val nav = rememberNavController()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = modifier.padding(48.dp)) {
@@ -64,7 +66,8 @@ fun FavouritesScreen(
                     CatBreedItem(
                         breed,
                         isFavorite = false,
-                        onFavoriteClick = {}
+                        onFavoriteClick = {},
+                        navController = nav
                     )
                 }
             }

@@ -2,6 +2,7 @@ package com.example.catchallenge.ui.screens.overview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,9 +35,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.domain.model.CatBreed
 
 @Composable
@@ -63,45 +67,45 @@ fun OverviewScreen(
         CatBreed("18", "Breed 18")
     )
 ) {
+    val navController = rememberNavController()
+    Column(modifier = modifier.padding(48.dp)) {
+        Text(
+            text = "Cats App",
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
 
-        Column(modifier = modifier.padding(48.dp)) {
-            Text(
-                text = "Cats App",
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+        var searchText by rememberSaveable { mutableStateOf("") }
 
-            var searchText by rememberSaveable { mutableStateOf("") }
+        val filteredBreeds = if (searchText.isBlank()) {
+            catBreeds
+        } else {
+            catBreeds.filter { it.name.contains(searchText, ignoreCase = true) }
+        }
 
-            val filteredBreeds = if (searchText.isBlank()) {
-                catBreeds
-            } else {
-                catBreeds.filter { it.name.contains(searchText, ignoreCase = true) }
-            }
+        TextField(
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            value = searchText,
+            onValueChange = { searchText = it },
+            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+            placeholder = { Text("Search") },
+            shape = RoundedCornerShape(50.dp),
+            singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp)
+                .border(
+                    width = 0.dp,
+                    color = Color.Transparent,
+                    shape = RoundedCornerShape(50.dp)
+                )
+        )
 
-            TextField(
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                value = searchText,
-                onValueChange = { searchText = it },
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
-                placeholder = { Text("Search") },
-                shape = RoundedCornerShape(50.dp),
-                singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp)
-                    .border(
-                        width = 0.dp,
-                        color = Color.Transparent,
-                        shape = RoundedCornerShape(50.dp)
-                    )
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
@@ -119,7 +123,8 @@ fun OverviewScreen(
                     CatBreedItem(
                         breed,
                         isFavorite = false,
-                        onFavoriteClick = {}
+                        onFavoriteClick = {},
+                        navController = navController
                     )
                 }
             }
@@ -132,7 +137,8 @@ fun OverviewScreen(
 fun CatBreedItem(
     breed: CatBreed,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    navController: NavController
 ) {
     var isFav by remember { mutableStateOf(isFavorite) }
 
@@ -143,6 +149,9 @@ fun CatBreedItem(
             modifier = Modifier
                 .size(100.dp)
                 .background(Color.Gray)
+                .clickable {
+                    navController.navigate("detail/${breed.id}")
+                }
         ) {
             IconButton(
                 onClick = onFavoriteClick,

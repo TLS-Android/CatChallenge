@@ -68,7 +68,7 @@ fun DetailScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Origin: ${breed.origin}")
+            Text(text = "Name: ${breed.name}")
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Temperament: ${breed.temperament}")
             Spacer(modifier = Modifier.height(8.dp))
@@ -88,12 +88,10 @@ fun DetailScreenPreview() {
             id = "1",
             isFavourite = true,
             name = "Siamese",
-            origin = "Thailand",
             temperament = "Affectionate, social, playful, and intelligent",
             description = "The Siamese cat is one of the first distinctly " +
                     "recognized breeds of Asian cat.",
             imageUrl = "https://cdn2.thecatapi.com/images/2v0.jpg",
-            lifespan = "2 years",
         ),
         onToggleFavorite = {  }
     )
