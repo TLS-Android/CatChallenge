@@ -1,6 +1,5 @@
 package com.example.catchallenge.ui.screens.overview
 
-import androidx.activity.result.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
@@ -28,7 +27,7 @@ class OverviewViewModel @Inject constructor(
 
     fun updateFavoriteStatus(breedName: String, isFavorite: Boolean) {
         viewModelScope.launch {
-            catBreedRepository.updateFavoriteStatus(breedName, isFavorite)
+            catBreedRepository.updateFavoriteStatus(breedName)
         }
     }
 

@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface CatBreedRepository {
     fun fetchAllCatBreeds(): Flow<List<CatBreed>>
     fun searchCatBreeds(query: String): Flow<List<CatBreed>>
-    fun updateFavoriteStatus(breedName: String, favorite: Boolean)
+    suspend fun updateFavoriteStatus(breedName: String)
     //TODO: Operations regarding favourites
 }
