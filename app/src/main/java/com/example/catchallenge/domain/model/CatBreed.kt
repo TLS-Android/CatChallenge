@@ -1,12 +1,34 @@
 package com.example.catchallenge.domain.model
 
-data class CatBreed(
+import com.google.gson.annotations.SerializedName
+
+data class CatBreedsFullResponse(
+    val breeds: List<CatBreed>,
+)
+
+data class CatBreedResponse(
+    val breeds: CatBreed,
     val id: String,
+    val url: String,
+    val width: Int,
+    val height: Int
+)
+
+data class CatBreed(
+    @SerializedName("id")
+    val id: String,
+
+    @SerializedName("name")
     val name: String,
-    val origin: String? = "",
-    val temperament: String? = "",
+
+    @SerializedName("description")
     val description: String? = "",
-    val lifespan: String? = "",
+
+    @SerializedName("temperament")
+    val temperament: String? = "",
+
+    @SerializedName("imageUrl")
     val imageUrl: String? = "",
+
     val isFavourite: Boolean = false
 )
