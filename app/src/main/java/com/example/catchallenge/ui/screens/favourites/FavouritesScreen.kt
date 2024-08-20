@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -16,14 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.catchallenge.domain.model.CatBreed
 import com.example.catchallenge.ui.screens.overview.CatBreedItem
 
 @Composable
 fun FavouritesScreen(
     modifier: Modifier = Modifier,
-    favCatBreeds: List<String> = listOf(
-        "Breed 1", "Breed 2", "Breed 3", "Breed 4", "Breed 5", "Breed 6",
-    ),
+    favCatBreeds: List<CatBreed> = listOf(
+        CatBreed("1", "Breed 1"),
+        CatBreed("2", "Breed 2"),
+        CatBreed("3", "Breed 3"),
+        CatBreed("4", "Breed 4"),
+        CatBreed("5", "Breed 5"),
+        CatBreed("6", "Breed 6"),
+        CatBreed("7", "Breed 7"),
+        CatBreed("8", "Breed 8"),
+        CatBreed("9", "Breed 9"),
+        CatBreed("10", "Breed 10"),
+    )
 ) {
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -33,6 +45,8 @@ fun FavouritesScreen(
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
@@ -56,10 +70,6 @@ fun FavouritesScreen(
             }
         }
     }
-
-
-
-
 }
 
 @Preview(

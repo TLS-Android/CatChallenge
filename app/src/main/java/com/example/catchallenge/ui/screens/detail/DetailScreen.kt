@@ -72,7 +72,7 @@ fun DetailScreen(
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Temperament: ${breed.temperament}")
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = breed.description)
+            Text(text = breed.description ?: "n/a")
         }
     }
 }

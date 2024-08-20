@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -23,9 +24,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,18 +37,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.catchallenge.domain.model.CatBreed
 
 @Composable
 fun OverviewScreen(
     modifier: Modifier = Modifier,
-    catBreeds: List<String> = listOf(
-        "Breed 1", "Breed 2", "Breed 3", "Breed 4", "Breed 5", "Breed 6",
-        "Breed 7", "Breed 8", "Breed 9", "Breed 10", "Breed 11", "Breed 12",
-        "Breed 13", "Breed 14", "Breed 15", "Breed 16", "Breed 17", "Breed 18",
-    ),
+    catBreeds: List<CatBreed> = listOf(
+        CatBreed("1", "Breed 1"),
+        CatBreed("2", "Breed 2"),
+        CatBreed("3", "Breed 3"),
+        CatBreed("4", "Breed 4"),
+        CatBreed("5", "Breed 5"),
+        CatBreed("6", "Breed 6"),
+        CatBreed("7", "Breed 7"),
+        CatBreed("8", "Breed 8"),
+        CatBreed("9", "Breed 9"),
+        CatBreed("10", "Breed 10"),
+        CatBreed("11", "Breed 11"),
+        CatBreed("12", "Breed 12"),
+        CatBreed("13", "Breed 13"),
+        CatBreed("14", "Breed 14"),
+        CatBreed("15", "Breed 15"),
+        CatBreed("16", "Breed 16"),
+        CatBreed("17", "Breed 17"),
+        CatBreed("18", "Breed 18")
+    )
 ) {
 
-    Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = modifier.padding(48.dp)) {
             Text(
                 text = "Cats App",
@@ -55,13 +73,24 @@ fun OverviewScreen(
 
             var searchText by rememberSaveable { mutableStateOf("") }
 
-            //TODO: Remove black line on the bottom of the search bar
+            val filteredBreeds = if (searchText.isBlank()) {
+                catBreeds
+            } else {
+                catBreeds.filter { it.name.contains(searchText, ignoreCase = true) }
+            }
+
             TextField(
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
                 value = searchText,
                 onValueChange = { searchText = it },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
                 placeholder = { Text("Search") },
                 shape = RoundedCornerShape(50.dp),
+                singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 32.dp)
@@ -71,6 +100,8 @@ fun OverviewScreen(
                         shape = RoundedCornerShape(50.dp)
                     )
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
@@ -84,7 +115,7 @@ fun OverviewScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.weight(1f)
             ) {
-                items(catBreeds) { breed ->
+                items(filteredBreeds) { breed ->
                     CatBreedItem(
                         breed,
                         isFavorite = false,
@@ -94,16 +125,17 @@ fun OverviewScreen(
             }
 
         }
-    }
 
 }
 
 @Composable
 fun CatBreedItem(
-    breed: String,
+    breed: CatBreed,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit
 ) {
+    var isFav by remember { mutableStateOf(isFavorite) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -125,7 +157,7 @@ fun CatBreedItem(
                 )
             }
         }
-        Text(breed)
+        Text(breed.name)
     }
 }
 
