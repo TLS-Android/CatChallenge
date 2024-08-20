@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -22,7 +22,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.ui.screens.detail.DetailScreen
 import com.example.catchallenge.ui.screens.detail.DetailViewModel
 import com.example.catchallenge.ui.screens.favourites.FavouritesScreen
+import com.example.catchallenge.ui.screens.favourites.FavouritesViewModel
 import com.example.catchallenge.ui.screens.overview.OverviewScreen
+import com.example.catchallenge.ui.screens.overview.OverviewViewModel
 
 @Composable
 fun NavigationComponent(
@@ -45,24 +47,20 @@ fun NavigationComponent(
 fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = Screen.Overview.route) {
         composable(Screen.Overview.route) {
-            OverviewScreen(
-                catBreeds = TODO(),
-                overviewViewModel = TODO()
-            )
+            OverviewScreen()
         }
         composable(Screen.Detail.route + "/{breedId}") { backStackEntry ->
             val breedId = backStackEntry.arguments?.getString("breedId")
-            val detailViewModel = viewModel<DetailViewModel>()
+            val detailViewModel = hiltViewModel<DetailViewModel>()
             val breed = detailViewModel.getBreedById(breedId!!)
             DetailScreen(
                 breed = breed,
-                onToggleFavorite = { detailViewModel.toggleFavorite(breed) },
-                detailViewModel = detailViewModel
+                onToggleFavorite = { detailViewModel.toggleFavorite(breed) }
             )
         }
-        composable(Screen.Favourites.route) { FavouritesScreen(
-            favouritesViewModel = TODO()
-        )
+        composable(Screen.Favourites.route) {
+            val favouritesViewModel = hiltViewModel<FavouritesViewModel>()
+            FavouritesScreen()
         }
     }
 }

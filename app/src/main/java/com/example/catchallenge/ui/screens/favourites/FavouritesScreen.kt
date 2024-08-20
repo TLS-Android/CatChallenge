@@ -7,7 +7,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun FavouritesScreen(
     modifier: Modifier = Modifier,
-    favouritesViewModel: FavouritesViewModel = hiltViewModel(),
 ) {
 
 }

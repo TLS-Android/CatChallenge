@@ -43,7 +43,6 @@ fun OverviewScreen(
         "Breed 7", "Breed 8", "Breed 9", "Breed 10", "Breed 11", "Breed 12",
         "Breed 13", "Breed 14", "Breed 15", "Breed 16", "Breed 17", "Breed 18",
     ),
-    overviewViewModel: OverviewViewModel = hiltViewModel()
 ) {
 
     Column(modifier = modifier.padding(48.dp)) {

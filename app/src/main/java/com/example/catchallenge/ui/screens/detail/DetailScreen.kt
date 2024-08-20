@@ -23,8 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.catchallenge.domain.model.CatBreed
@@ -34,7 +32,6 @@ import com.example.catchallenge.domain.model.CatBreed
 fun DetailScreen(
     breed: CatBreed,
     onToggleFavorite: () -> Unit,
-    detailViewModel: DetailViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -98,7 +95,6 @@ fun DetailScreenPreview() {
             imageUrl = "https://cdn2.thecatapi.com/images/2v0.jpg",
             lifespan = "2 years",
         ),
-        onToggleFavorite = {  },
-        detailViewModel = viewModel()
+        onToggleFavorite = {  }
     )
 }

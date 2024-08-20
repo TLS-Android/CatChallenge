@@ -13,13 +13,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
-    private val catBreedRepository: CatBreedRepository
+    private val catBreedRepository: CatBreedRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OverviewState())
     val uiState: StateFlow<OverviewState> = _uiState.asStateFlow()
-
-
 
     init {
         getCatBreeds()

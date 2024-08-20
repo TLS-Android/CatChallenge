@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val catBreedRepository: CatBreedRepository,
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CatBreedDetailState())
