@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,7 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun OverviewScreen(
@@ -45,60 +45,61 @@ fun OverviewScreen(
     ),
 ) {
 
-    Column(modifier = modifier.padding(48.dp)) {
-        Text(
-            text = "Cats App",
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = modifier.padding(48.dp)) {
+            Text(
+                text = "Cats App",
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
 
-        var searchText by rememberSaveable { mutableStateOf("") }
+            var searchText by rememberSaveable { mutableStateOf("") }
 
-        //TODO: Remove black line on the bottom of the search bar
-        TextField(
-            value = searchText,
-            onValueChange = { searchText = it },
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
-            placeholder = { Text("Search") },
-            shape = RoundedCornerShape(50.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp)
-                .border(
-                    width = 0.dp,
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(50.dp)
-                )
-        )
+            //TODO: Remove black line on the bottom of the search bar
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                placeholder = { Text("Search") },
+                shape = RoundedCornerShape(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp)
+                    .border(
+                        width = 0.dp,
+                        color = Color.Transparent,
+                        shape = RoundedCornerShape(50.dp)
+                    )
+            )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            contentPadding = PaddingValues(
-                top = 48.dp,
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 16.dp
-            ),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(catBreeds) { breed ->
-                BreedItem(
-                    breed,
-                    isFavorite = false,
-                    onFavoriteClick = {
-
-
-                    }
-                )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(
+                    top = 48.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 16.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                items(catBreeds) { breed ->
+                    CatBreedItem(
+                        breed,
+                        isFavorite = false,
+                        onFavoriteClick = {}
+                    )
+                }
             }
-        }
 
+        }
     }
+
 }
 
 @Composable
-fun BreedItem(
+fun CatBreedItem(
     breed: String,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit

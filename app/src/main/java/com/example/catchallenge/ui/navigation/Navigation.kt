@@ -24,24 +24,6 @@ import com.example.catchallenge.ui.screens.detail.DetailViewModel
 import com.example.catchallenge.ui.screens.favourites.FavouritesScreen
 import com.example.catchallenge.ui.screens.favourites.FavouritesViewModel
 import com.example.catchallenge.ui.screens.overview.OverviewScreen
-import com.example.catchallenge.ui.screens.overview.OverviewViewModel
-
-@Composable
-fun NavigationComponent(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    innerPadding: PaddingValues
-) {
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
-    ) { innerPaddingValues ->
-        Navigation(
-            navController = navController,
-            modifier = Modifier.padding(innerPaddingValues)
-        )
-    }
-}
-
 
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -59,7 +41,6 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
         composable(Screen.Favourites.route) {
-            val favouritesViewModel = hiltViewModel<FavouritesViewModel>()
             FavouritesScreen()
         }
     }
