@@ -1,12 +1,9 @@
 package com.example.catchallenge.ui.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,30 +15,32 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.ui.screens.detail.DetailScreen
 import com.example.catchallenge.ui.screens.detail.DetailViewModel
 import com.example.catchallenge.ui.screens.favourites.FavouritesScreen
-import com.example.catchallenge.ui.screens.favourites.FavouritesViewModel
 import com.example.catchallenge.ui.screens.overview.OverviewScreen
 
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = Screen.Overview.route) {
         composable(Screen.Overview.route) {
-            OverviewScreen()
+            OverviewScreen(navController)
         }
         composable(Screen.Detail.route + "/{breedId}") { backStackEntry ->
             val breedId = backStackEntry.arguments?.getString("breedId")
             val detailViewModel = hiltViewModel<DetailViewModel>()
             val breed = detailViewModel.getBreedById(breedId!!)
             DetailScreen(
+                modifier,
+                navController,
                 breed = breed,
                 onToggleFavorite = { detailViewModel.toggleFavorite(breed) }
             )
         }
         composable(Screen.Favourites.route) {
-            FavouritesScreen()
+            FavouritesScreen(
+                navController
+            )
         }
     }
 }

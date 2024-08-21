@@ -35,16 +35,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.catchallenge.domain.model.CatBreed
+import com.example.catchallenge.ui.navigation.Screen
 
 @Composable
 fun OverviewScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     catBreeds: List<CatBreed> = listOf(
         CatBreed("1", "Breed 1"),
@@ -67,7 +68,6 @@ fun OverviewScreen(
         CatBreed("18", "Breed 18")
     )
 ) {
-    val navController = rememberNavController()
     Column(modifier = modifier.padding(48.dp)) {
         Text(
             text = "Cats App",
@@ -150,7 +150,7 @@ fun CatBreedItem(
                 .size(100.dp)
                 .background(Color.Gray)
                 .clickable {
-                    navController.navigate("detail/${breed.id}")
+                    navController.navigate(Screen.Detail.route + "/${breed.id}")
                 }
         ) {
             IconButton(
@@ -176,5 +176,7 @@ fun CatBreedItem(
     device = Devices.PIXEL_4_XL)
 @Composable
 fun OverviewScreenPreview() {
-    OverviewScreen()
+    OverviewScreen(
+        navController = rememberNavController()
+    )
 }

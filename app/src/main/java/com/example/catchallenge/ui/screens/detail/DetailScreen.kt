@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.catchallenge.domain.model.CatBreed
@@ -30,14 +32,12 @@ import com.example.catchallenge.domain.model.CatBreed
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun DetailScreen(
+    modifier: Modifier,
+    navController: NavHostController,
     breed: CatBreed,
     onToggleFavorite: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
-    ) {
+    Column(modifier = modifier.padding(48.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -56,20 +56,28 @@ fun DetailScreen(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(48.dp))
         GlideImage(
             model = breed.imageUrl,
             contentDescription = breed.name,
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(16f / 9f),
+            contentScale = ContentScale.Fit
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
-            Text(text = "Name: ${breed.name}")
-            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Name: ${breed.name}",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Origin: ${breed.origin}")
+            Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Temperament: ${breed.temperament}")
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = breed.description ?: "n/a")
@@ -84,10 +92,13 @@ fun DetailScreen(
 @Composable
 fun DetailScreenPreview() {
     DetailScreen(
+        modifier = Modifier,
+        navController = rememberNavController(),
         breed = CatBreed(
             id = "1",
             isFavourite = true,
             name = "Siamese",
+            origin = "Thailand",
             temperament = "Affectionate, social, playful, and intelligent",
             description = "The Siamese cat is one of the first distinctly " +
                     "recognized breeds of Asian cat.",

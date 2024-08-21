@@ -20,14 +20,13 @@ class CatBreedRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateFavoriteStatus(breedName: String) {
+    override fun getCatBreedById(catBreedId: String): Flow<CatBreed> {
         TODO("Not yet implemented")
     }
 
-//    suspend fun updateFavoriteStatus(breed: CatBreed) {
-//        val entity = breed.toCatBreedEntity()
-//        catBreedDao.updateFavoriteStatus(entity.id, entity.isFavorite)
-//    }
+    override suspend fun updateFavoriteStatus(breedName: String) {
+        TODO("Not yet implemented")
+    }
 }
 
 fun CatBreed.toCatBreedEntity(): CatBreedEntity {

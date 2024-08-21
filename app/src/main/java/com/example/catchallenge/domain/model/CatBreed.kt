@@ -1,6 +1,7 @@
 package com.example.catchallenge.domain.model
 
 import com.google.gson.annotations.SerializedName
+import dagger.Provides
 
 data class CatBreedsFullResponse(
     val breeds: List<CatBreed>,
@@ -21,11 +22,14 @@ data class CatBreed(
     @SerializedName("name")
     val name: String,
 
-    @SerializedName("description")
-    val description: String? = "",
+    @SerializedName("origin")
+    val origin: String? = "",
 
     @SerializedName("temperament")
     val temperament: String? = "",
+
+    @SerializedName("description")
+    val description: String? = "",
 
     @SerializedName("imageUrl")
     val imageUrl: String? = "",

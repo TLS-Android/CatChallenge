@@ -7,6 +7,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route: String, val icon: ImageVector? = null, val label: String) {
     object Overview : Screen("overview", Icons.Default.Apps, "Cats List")
-    object Detail : Screen("detail/{breedId}", null, "Detail")
+    object Detail : Screen("detail", null, "Detail")
     object Favourites : Screen("fav", Icons.Default.Star, "Favourites")
 }

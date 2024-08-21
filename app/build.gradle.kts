@@ -67,6 +67,7 @@ dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    testImplementation(libs.junit.junit)
     ksp(libs.androidx.room.compiler)
 
     // COMPOSE
