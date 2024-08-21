@@ -16,6 +16,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -23,8 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.catchallenge.domain.model.CatBreed
@@ -33,10 +34,11 @@ import com.example.catchallenge.domain.model.CatBreed
 @Composable
 fun DetailScreen(
     modifier: Modifier,
-    navController: NavHostController,
-    breed: CatBreed,
+    viewModel: DetailViewModel = hiltViewModel(),
     onToggleFavorite: () -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Column(modifier = modifier.padding(48.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -44,22 +46,22 @@ fun DetailScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = breed.name,
+                text = uiState.catBreed!!.name,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
             IconButton(onClick = onToggleFavorite) {
                 Icon(
-                    imageVector = if (breed.isFavourite) Icons.Filled.Star else Icons.Outlined.Star,
-                    contentDescription = if (breed.isFavourite)
+                    imageVector = if (uiState.catBreed!!.isFavourite) Icons.Filled.Star else Icons.Outlined.Star,
+                    contentDescription = if (uiState.catBreed!!.isFavourite)
                         "Remove from favorites" else "Add to favorites"
                 )
             }
         }
         Spacer(modifier = Modifier.height(48.dp))
         GlideImage(
-            model = breed.imageUrl,
-            contentDescription = breed.name,
+            model = uiState.catBreed!!.imageUrl,
+            contentDescription = uiState.catBreed!!.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f),
@@ -71,16 +73,16 @@ fun DetailScreen(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "Name: ${breed.name}",
+                text = "Name: ${uiState.catBreed!!.name}",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Origin: ${breed.origin}")
+            Text(text = "Origin: ${uiState.catBreed!!.origin}")
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Temperament: ${breed.temperament}")
+            Text(text = "Temperament: ${uiState.catBreed!!.temperament}")
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = breed.description ?: "n/a")
+            Text(text = uiState.catBreed!!.description ?: "n/a")
         }
     }
 }
@@ -91,19 +93,18 @@ fun DetailScreen(
     device = Devices.PIXEL_4_XL)
 @Composable
 fun DetailScreenPreview() {
+    val sampleBreed = CatBreed(
+        id = "1",
+        name = "Siamese",
+        origin = "Thailand",
+        temperament = "Affectionate, social, playful, and intelligent",
+        description = "The Siamese cat is one of the first distinctly " +
+                "recognized breeds of Asian cat.",
+    )
+
     DetailScreen(
         modifier = Modifier,
-        navController = rememberNavController(),
-        breed = CatBreed(
-            id = "1",
-            isFavourite = true,
-            name = "Siamese",
-            origin = "Thailand",
-            temperament = "Affectionate, social, playful, and intelligent",
-            description = "The Siamese cat is one of the first distinctly " +
-                    "recognized breeds of Asian cat.",
-            imageUrl = "https://cdn2.thecatapi.com/images/2v0.jpg",
-        ),
-        onToggleFavorite = {  }
+        viewModel = TODO(),
+        onToggleFavorite = { },
     )
 }

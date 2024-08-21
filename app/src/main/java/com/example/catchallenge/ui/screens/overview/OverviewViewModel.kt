@@ -25,7 +25,7 @@ class OverviewViewModel @Inject constructor(
 
     fun updateFavoriteStatus(breedName: String, isFavorite: Boolean) {
         viewModelScope.launch {
-            catBreedRepository.updateFavoriteStatus(breedName)
+            catBreedRepository.updateFavoriteStatus(breedName, isFavorite)
         }
     }
 

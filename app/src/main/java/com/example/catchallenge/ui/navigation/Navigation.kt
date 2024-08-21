@@ -32,8 +32,6 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             val breed = detailViewModel.getBreedById(breedId!!)
             DetailScreen(
                 modifier,
-                navController,
-                breed = breed,
                 onToggleFavorite = { detailViewModel.toggleFavorite(breed) }
             )
         }

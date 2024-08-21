@@ -7,6 +7,7 @@ interface CatBreedRepository {
     fun fetchAllCatBreeds(): Flow<List<CatBreed>>
     fun searchCatBreeds(query: String): Flow<List<CatBreed>>
     fun getCatBreedById(catBreedId: String): Flow<CatBreed>
-    suspend fun updateFavoriteStatus(breedName: String)
+    suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean)
+    suspend fun getFavouriteCatBreeds(): Flow<List<CatBreed>>
     //TODO: Operations regarding favourites
 }

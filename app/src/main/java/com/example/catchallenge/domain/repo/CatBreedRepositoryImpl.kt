@@ -12,6 +12,7 @@ class CatBreedRepositoryImpl @Inject constructor(
     private val catBreedDao: CatBreedDao
 ): CatBreedRepository {
 
+    //region Get Breeds
     override fun fetchAllCatBreeds(): Flow<List<CatBreed>> = flow {
         emit(catBreedDao.fetchAllCatBreeds().first().map { it.toCatBreed() })
     }
@@ -24,9 +25,20 @@ class CatBreedRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateFavoriteStatus(breedName: String) {
-        TODO("Not yet implemented")
+    //endregion
+
+
+    //region Favourites
+    override suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean) {
+        catBreedDao.updateFavoriteStatus(breedId, isFavorite)
     }
+
+    override suspend fun getFavouriteCatBreeds(): Flow<List<CatBreed>> {
+        return catBreedDao.getFavoriteCatBreeds()
+    }
+    //endregion
+
+
 }
 
 fun CatBreed.toCatBreedEntity(): CatBreedEntity {
