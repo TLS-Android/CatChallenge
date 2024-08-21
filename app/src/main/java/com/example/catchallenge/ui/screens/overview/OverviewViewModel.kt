@@ -32,6 +32,10 @@ class OverviewViewModel @Inject constructor(
     private fun getCatBreeds() {
         //TODO()
     }
+
+    fun getCatBreed(s: String) {
+
+    }
 }
 
 data class OverviewState(
