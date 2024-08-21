@@ -14,32 +14,25 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.catchallenge.domain.model.CatBreed
 import com.example.catchallenge.ui.screens.overview.CatBreedItem
 
 @Composable
 fun FavouritesScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    favCatBreeds: List<CatBreed> = listOf(
-        CatBreed("1", "Breed 1"),
-        CatBreed("2", "Breed 2"),
-        CatBreed("3", "Breed 3"),
-        CatBreed("4", "Breed 4"),
-        CatBreed("5", "Breed 5"),
-        CatBreed("6", "Breed 6"),
-        CatBreed("7", "Breed 7"),
-        CatBreed("8", "Breed 8"),
-        CatBreed("9", "Breed 9"),
-        CatBreed("10", "Breed 10"),
-    )
+    viewModel: FavouritesViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = modifier.padding(48.dp)) {
             Text(
@@ -62,14 +55,17 @@ fun FavouritesScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.weight(1f)
             ) {
-                items(favCatBreeds) { breed ->
-                    CatBreedItem(
-                        breed,
-                        isFavorite = false,
-                        onFavoriteClick = {},
-                        navController = navController
-                    )
+                if (uiState.favoriteCatBreeds.isNotEmpty()) {
+                    items(items = uiState.favoriteCatBreeds) { breed ->
+                        CatBreedItem(
+                            breed,
+                            isFavorite = false,
+                            onFavoriteClick = {},
+                            navController = navController
+                        )
+                    }
                 }
+
             }
         }
     }

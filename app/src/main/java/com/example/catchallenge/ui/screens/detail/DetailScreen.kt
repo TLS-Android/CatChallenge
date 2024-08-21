@@ -52,7 +52,8 @@ fun DetailScreen(
             )
             IconButton(onClick = onToggleFavorite) {
                 Icon(
-                    imageVector = if (uiState.catBreed!!.isFavourite) Icons.Filled.Star else Icons.Outlined.Star,
+                    imageVector = if (uiState.catBreed!!.isFavourite) Icons.Filled.Star
+                        else Icons.Outlined.Star,
                     contentDescription = if (uiState.catBreed!!.isFavourite)
                         "Remove from favorites" else "Add to favorites"
                 )

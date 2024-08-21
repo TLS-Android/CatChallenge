@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
 import com.example.catchallenge.domain.repo.CatBreedRepository
+import com.example.catchallenge.ui.screens.detail.CatBreedDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,8 +20,39 @@ class OverviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OverviewState())
     val uiState: StateFlow<OverviewState> = _uiState.asStateFlow()
 
+    private val catBreeds: List<CatBreed> = listOf(
+        CatBreed("1", "Breed 1"),
+        CatBreed("2", "Breed 2"),
+        CatBreed("3", "Breed 3"),
+        CatBreed("4", "Breed 4"),
+        CatBreed("5", "Breed 5"),
+        CatBreed("6", "Breed 6"),
+        CatBreed("7", "Breed 7"),
+        CatBreed("8", "Breed 8"),
+        CatBreed("9", "Breed 9"),
+        CatBreed("10", "Breed 10"),
+        CatBreed("11", "Breed 11"),
+        CatBreed("12", "Breed 12"),
+        CatBreed("13", "Breed 13"),
+        CatBreed("14", "Breed 14"),
+        CatBreed("15", "Breed 15"),
+        CatBreed("16", "Breed 16"),
+        CatBreed("17", "Breed 17"),
+        CatBreed("18", "Breed 18")
+    )
+
     init {
         getCatBreeds()
+        updateUiState()
+    }
+
+    private fun updateUiState() {
+        _uiState.value = OverviewState(
+            catBreeds = catBreeds,
+            searchQuery = "",
+            isLoading = false,
+            error = null
+        )
     }
 
     fun updateFavoriteStatus(breedName: String, isFavorite: Boolean) {
@@ -44,3 +76,4 @@ data class OverviewState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
+
