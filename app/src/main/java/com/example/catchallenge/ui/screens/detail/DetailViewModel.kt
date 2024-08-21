@@ -22,11 +22,22 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CatBreedDetailState())
     val uiState: StateFlow<CatBreedDetailState> = _uiState.asStateFlow()
 
+    private var mockCatBreed : CatBreed? = null
+
     init {
         savedStateHandle.get<String>("breedId")?.let { breedId ->
             //getCatBreed(breedId)
-            getBreedById(breedId)
+            mockCatBreed = getBreedById(breedId)
+            updateUiState()
         }
+    }
+
+    fun updateUiState() {
+        _uiState.value = CatBreedDetailState(
+            catBreed = mockCatBreed,
+            isLoading = false,
+            error = null
+        )
     }
 
     private fun getCatBreed(breedId: String) {
@@ -48,7 +59,6 @@ class DetailViewModel @Inject constructor(
         }
         */
     }
-
 
     //TODO: Add logic
     fun getBreedById(breedId: String): CatBreed {
