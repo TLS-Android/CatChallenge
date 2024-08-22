@@ -11,8 +11,4 @@ interface CatBreedService {
     @GET("breeds/search")
     suspend fun searchCatBreeds(query: String): List<CatBreed>
 
-
-
-
-
 }

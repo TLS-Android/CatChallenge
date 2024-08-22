@@ -1,7 +1,11 @@
 package com.example.catchallenge.domain.repo
 
+import androidx.compose.foundation.text2.input.insert
+import androidx.room.withTransaction
 import com.example.catchallenge.data.local.CatBreedDao
 import com.example.catchallenge.data.local.CatBreedEntity
+import com.example.catchallenge.data.local.CatBreedDatabase
+import com.example.catchallenge.data.remote.CatBreedService
 import com.example.catchallenge.domain.model.CatBreed
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -9,13 +13,16 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CatBreedRepositoryImpl @Inject constructor(
-    private val catBreedDao: CatBreedDao
+    private val catBreedDao: CatBreedDao,
+    private val api: CatBreedService,
+    database: CatBreedDatabase,
 ): CatBreedRepository {
 
     //region Get Breeds
     override fun fetchAllCatBreeds(): Flow<List<CatBreed>> = flow {
         emit(catBreedDao.fetchAllCatBreeds().first().map { it.toCatBreed() })
     }
+
 
     override fun searchCatBreeds(query: String): Flow<List<CatBreed>> {
         TODO("Not yet implemented")

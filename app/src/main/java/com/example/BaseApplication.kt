@@ -2,15 +2,15 @@ package com.example
 
 import android.app.Application
 import androidx.room.Room
-import com.example.catchallenge.data.local.CatDatabase
+import com.example.catchallenge.data.local.CatBreedDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class BaseApplication : Application() {
-    val database: CatDatabase by lazy {
+    val database: CatBreedDatabase by lazy {
         Room.databaseBuilder(
             this,
-            CatDatabase::class.java,
+            CatBreedDatabase::class.java,
             "cat_database"
         ).build()
     }

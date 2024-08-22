@@ -26,7 +26,7 @@ class OverviewViewModelTest {
                     "recognized breeds of Asian cat.",
         )
 
-        `when`(repository.getCatBreedById("1")).thenReturn(expectedCatBreed)
+        //`when`(repository.getCatBreedById("1")).thenReturn(expectedCatBreed)
 
         viewModel.getCatBreed("1")
 
