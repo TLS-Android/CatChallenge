@@ -13,8 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.example.catchallenge.BuildConfig
 
-
-private const val CAT_API_ENDPOINT = "https://thecatapi.com/"
+private const val CAT_API_ENDPOINT = "https://api.thecatapi.com/v1/"
 
 @Module
 @InstallIn(SingletonComponent::class)

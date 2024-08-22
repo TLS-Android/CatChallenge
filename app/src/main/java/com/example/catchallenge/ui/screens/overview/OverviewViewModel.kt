@@ -20,7 +20,10 @@ class OverviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OverviewState())
     val uiState: StateFlow<OverviewState> = _uiState.asStateFlow()
 
-    private val catBreeds: List<CatBreed> = listOf(
+    private val _catBreeds = MutableStateFlow<List<CatBreed>>(emptyList())
+    val catBreeds: StateFlow<List<CatBreed>> = _catBreeds.asStateFlow()
+
+    private val catBreedsMock: List<CatBreed> = listOf(
         CatBreed("1", "Breed 1"),
         CatBreed("2", "Breed 2"),
         CatBreed("3", "Breed 3"),
@@ -42,13 +45,18 @@ class OverviewViewModel @Inject constructor(
     )
 
     init {
-        getCatBreeds()
+        viewModelScope.launch {
+            catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
+                _uiState.value.catBreeds = breeds
+            }
+        }
+
         updateUiState()
     }
 
     private fun updateUiState() {
         _uiState.value = OverviewState(
-            catBreeds = catBreeds,
+            catBreeds = catBreeds.value,
             searchQuery = "",
             isLoading = false,
             error = null
@@ -61,17 +69,10 @@ class OverviewViewModel @Inject constructor(
         }
     }
 
-    private fun getCatBreeds() {
-        //TODO()
-    }
-
-    fun getCatBreed(s: String) {
-
-    }
 }
 
 data class OverviewState(
-    val catBreeds: List<CatBreed> = emptyList(),
+    var catBreeds: List<CatBreed> = emptyList(),
     val searchQuery: String = "",
     val isLoading: Boolean = false,
     val error: String? = null
