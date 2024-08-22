@@ -12,8 +12,11 @@ interface CatBreedDao {
     @Query("SELECT * FROM cat_breeds")
     fun fetchAllCatBreeds(): Flow<List<CatBreedEntity>>
 
+    //@Query("SELECT * FROM cat_breeds WHERE id = :breedId")
+    //fun fetchSingleCatBreedById(breedId: String): Flow<CatBreedEntity>
+
     @Query("SELECT * FROM cat_breeds WHERE id = :breedId")
-    fun fetchSingleCatBreedById(breedId: String): Flow<CatBreedEntity>
+    suspend fun fetchSingleCatBreedById(breedId: String): CatBreedEntity?
 
     @Query("SELECT * FROM cat_breeds WHERE id LIKE '%' || :query || '%'")
     fun searchCatBreeds(query: String): Flow<List<CatBreedEntity>>

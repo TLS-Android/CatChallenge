@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.example.catchallenge.BuildConfig
+import java.util.concurrent.TimeUnit
 
 private const val CAT_API_ENDPOINT = "https://api.thecatapi.com/v1/"
 
@@ -33,6 +34,9 @@ object NetworkModule {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(apiKeyInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()

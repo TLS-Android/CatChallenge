@@ -41,52 +41,56 @@ fun DetailScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = modifier.padding(48.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = uiState.catBreed!!.name,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-            IconButton(onClick = onToggleFavorite) {
-                Icon(
-                    imageVector = if (uiState.catBreed!!.isFavourite) Icons.Filled.Star
-                        else Icons.Outlined.Star,
-                    contentDescription = if (uiState.catBreed!!.isFavourite)
-                        "Remove from favorites" else "Add to favorites"
+        uiState.catBreed?.let { catBreed ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = catBreed.name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
                 )
+                IconButton(onClick = onToggleFavorite) {
+                    Icon(
+                        imageVector = if (catBreed.isFavourite) Icons.Filled.Star
+                        else Icons.Outlined.Star,
+                        contentDescription = if (catBreed.isFavourite)
+                            "Remove from favorites" else "Add to favorites"
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(48.dp))
+            GlideImage(
+                model = catBreed.image?.url,
+                contentDescription = uiState.catBreed!!.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f),
+                contentScale = ContentScale.Fit
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Name: ${catBreed.name}",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Origin: ${catBreed.origin}")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Temperament: ${catBreed.temperament}")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = catBreed.description ?: "n/a")
             }
         }
-        Spacer(modifier = Modifier.height(48.dp))
-        GlideImage(
-            model = uiState.catBreed!!.image?.url,
-            contentDescription = uiState.catBreed!!.name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(16f / 9f),
-            contentScale = ContentScale.Fit
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                text = "Name: ${uiState.catBreed!!.name}",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Origin: ${uiState.catBreed!!.origin}")
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Temperament: ${uiState.catBreed!!.temperament}")
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = uiState.catBreed!!.description ?: "n/a")
-        }
+
     }
+
 }
 
 @Preview(

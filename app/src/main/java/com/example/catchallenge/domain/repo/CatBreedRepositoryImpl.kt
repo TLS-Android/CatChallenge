@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CatBreedRepositoryImpl @Inject constructor(
@@ -31,8 +32,14 @@ class CatBreedRepositoryImpl @Inject constructor(
     override fun getAllCatBreedsFromLocalStorage(): Flow<List<CatBreedEntity>> =
         catBreedDao.fetchAllCatBreeds().flowOn(Dispatchers.IO)
 
-    override fun getSingleCatBreedById(breedId: String): Flow<CatBreedEntity> =
-        catBreedDao.fetchSingleCatBreedById(breedId).flowOn(Dispatchers.IO)
+    //override suspend fun getSingleCatBreedById(breedId: String): Flow<CatBreedEntity> =
+    //    catBreedDao.fetchSingleCatBreedById(breedId).flowOn(Dispatchers.IO)
+
+    override suspend fun getSingleCatBreedById(breedId: String): CatBreedEntity? {
+        return withContext(Dispatchers.IO) {
+            catBreedDao.fetchSingleCatBreedById(breedId)
+        }
+    }
 
     //region Favourites
     override suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean) {

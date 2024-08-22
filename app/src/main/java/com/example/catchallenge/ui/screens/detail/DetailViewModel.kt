@@ -1,6 +1,7 @@
 package com.example.catchallenge.ui.screens.detail
 
 import android.util.Log
+import androidx.activity.result.launch
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,31 +26,31 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CatBreedDetailState())
     val uiState: StateFlow<CatBreedDetailState> = _uiState.asStateFlow()
 
-    private var selectedCatBreed : CatBreed? = null
+    private val _selectedCatBreed = MutableStateFlow<CatBreed?>(null)
+    val selectedCatBreed: StateFlow<CatBreed?> = _selectedCatBreed.asStateFlow()
+
+    //private var selectedCatBreed : CatBreed? = null
+
+    private var newBreedId : String = ""
 
     init {
         savedStateHandle.get<String>("breedId")?.let { breedId ->
+            newBreedId = breedId
             Log.d("DetailViewModel", "breedId: $breedId")
             viewModelScope.launch {
-                repository.getSingleCatBreedById(breedId)
-                    .collect { catBreedEntity ->
-                        Log.d("DetailViewModel", "catBreedEntity: ${catBreedEntity.toCatBreed()}")
-
-                        /*
-                            _uiState.value = _uiState.value.copy(
-                                catBreed = catBreedEntity.toCatBreed()
-                            )
-                        */
-
-                    }
+                repository.getSingleCatBreedById(breedId)?.let { catBreedEntity ->
+                    _uiState.value = _uiState.value.copy(
+                        catBreed = catBreedEntity.toCatBreed()
+                    )
+                }
             }
-            //updateUiState()
         }
     }
 
+
     private fun updateUiState() {
         _uiState.value = CatBreedDetailState(
-            catBreed = selectedCatBreed,
+            catBreed = _selectedCatBreed.value,
             isLoading = false,
             error = null
         )
@@ -78,7 +80,7 @@ class DetailViewModel @Inject constructor(
 }
 
 data class CatBreedDetailState(
-    val catBreed: CatBreed? = null,
+    var catBreed: CatBreed? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
 )
