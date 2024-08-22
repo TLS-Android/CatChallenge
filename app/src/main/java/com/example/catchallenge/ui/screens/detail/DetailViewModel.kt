@@ -47,34 +47,15 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-
-    private fun updateUiState() {
-        _uiState.value = CatBreedDetailState(
-            catBreed = _selectedCatBreed.value,
-            isLoading = false,
-            error = null
-        )
-
-    }
-
-    //TODO: Add logic
-    fun getBreedById(breedId: String): CatBreed {
-        return CatBreed(
-            id = "1",
-            name = "Siamese",
-            origin = "Thailand",
-            temperament = "Affectionate, social, playful, and intelligent",
-            description = "The Siamese cat is one of the first distinctly " +
-                    "recognized breeds of Asian cat.",
-            image = CatBreedImageData(
-                imageId = "123",
-                url = "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg"
-            ),
-        )
-    }
-
     fun toggleFavorite(breed: CatBreed) {
-
+        viewModelScope.launch {
+            val currentCatBreed = uiState.value.catBreed
+            if (currentCatBreed != null) {
+                val updatedCatBreed = currentCatBreed.copy(isFavourite = !currentCatBreed.isFavourite)
+                repository.updateCatBreed(updatedCatBreed)
+                _uiState.value = uiState.value.copy(catBreed = updatedCatBreed)
+            }
+        }
     }
 
 }

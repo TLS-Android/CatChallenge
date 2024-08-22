@@ -29,10 +29,14 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
         composable(Screen.Detail.route + "/{breedId}") { backStackEntry ->
             val breedId = backStackEntry.arguments?.getString("breedId")
             val detailViewModel = hiltViewModel<DetailViewModel>()
-            val breed = detailViewModel.getBreedById(breedId!!)
+            val breed = detailViewModel.selectedCatBreed.value
             DetailScreen(
                 modifier,
-                onToggleFavorite = { detailViewModel.toggleFavorite(breed) }
+                onToggleFavorite = {
+                    if (breed != null) {
+                        detailViewModel.toggleFavorite(breed)
+                    }
+                }
             )
         }
         composable(Screen.Favourites.route) {

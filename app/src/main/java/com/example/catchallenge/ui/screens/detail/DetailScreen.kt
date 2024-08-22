@@ -64,7 +64,7 @@ fun DetailScreen(
             Spacer(modifier = Modifier.height(48.dp))
             GlideImage(
                 model = catBreed.image?.url,
-                contentDescription = uiState.catBreed!!.name,
+                contentDescription = "Cat Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f),

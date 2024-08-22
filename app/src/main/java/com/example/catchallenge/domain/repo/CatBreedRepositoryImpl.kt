@@ -29,11 +29,14 @@ class CatBreedRepositoryImpl @Inject constructor(
         catBreedDao.insertCatBreeds(catBreedEntities)
     }
 
+    override suspend fun updateCatBreed(updatedCatBreed: CatBreed) {
+        withContext(Dispatchers.IO) {
+            catBreedDao.updateCatBreed(updatedCatBreed.toCatBreedEntity())
+        }
+    }
+
     override fun getAllCatBreedsFromLocalStorage(): Flow<List<CatBreedEntity>> =
         catBreedDao.fetchAllCatBreeds().flowOn(Dispatchers.IO)
-
-    //override suspend fun getSingleCatBreedById(breedId: String): Flow<CatBreedEntity> =
-    //    catBreedDao.fetchSingleCatBreedById(breedId).flowOn(Dispatchers.IO)
 
     override suspend fun getSingleCatBreedById(breedId: String): CatBreedEntity? {
         return withContext(Dispatchers.IO) {
