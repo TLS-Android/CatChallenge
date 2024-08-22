@@ -1,20 +1,9 @@
 package com.example.catchallenge.domain.model
 
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import dagger.Provides
 
-data class CatBreedsFullResponse(
-    val breeds: List<CatBreed>,
-)
-
-data class CatBreedResponse(
-    val breeds: CatBreed,
-    val id: String,
-    val url: String,
-    val width: Int,
-    val height: Int
-)
-
+@TypeConverters(CatBreedImageDataTypeConverter::class)
 data class CatBreed(
     @SerializedName("id")
     val id: String,
@@ -31,8 +20,19 @@ data class CatBreed(
     @SerializedName("description")
     val description: String? = "",
 
-    @SerializedName("url")
-    val url: String? = "",
+    @TypeConverters(CatBreedImageDataTypeConverter::class)
+    val image: CatBreedImageData?,
 
     val isFavourite: Boolean = false
 )
+
+@TypeConverters(CatBreedImageDataTypeConverter::class)
+data class CatBreedImageData(
+    @SerializedName("img_id")
+    val imageId: String? = "",
+
+    @SerializedName("url")
+    val url: String? = ""
+)
+
+

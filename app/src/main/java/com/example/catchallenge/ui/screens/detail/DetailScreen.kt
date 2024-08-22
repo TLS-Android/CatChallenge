@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.catchallenge.domain.model.CatBreed
+import com.example.catchallenge.domain.model.CatBreedImageData
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -61,7 +62,7 @@ fun DetailScreen(
         }
         Spacer(modifier = Modifier.height(48.dp))
         GlideImage(
-            model = uiState.catBreed!!.imageUrl,
+            model = uiState.catBreed!!.image?.url,
             contentDescription = uiState.catBreed!!.name,
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,6 +102,10 @@ fun DetailScreenPreview() {
         temperament = "Affectionate, social, playful, and intelligent",
         description = "The Siamese cat is one of the first distinctly " +
                 "recognized breeds of Asian cat.",
+        image = CatBreedImageData(
+            imageId = "123",
+            url = "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg"
+        ),
     )
 
     DetailScreen(

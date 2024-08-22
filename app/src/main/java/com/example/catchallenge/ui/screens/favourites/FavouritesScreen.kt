@@ -57,7 +57,9 @@ fun FavouritesScreen(
             ) {
                 if (uiState.favoriteCatBreeds.isNotEmpty()) {
                     items(items = uiState.favoriteCatBreeds) { breed ->
+                        val index = uiState.favoriteCatBreeds.indexOf(breed)
                         CatBreedItem(
+                            index,
                             breed,
                             isFavorite = false,
                             onFavoriteClick = {},

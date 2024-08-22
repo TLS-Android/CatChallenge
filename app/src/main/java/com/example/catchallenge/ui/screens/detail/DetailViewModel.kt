@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
+import com.example.catchallenge.domain.model.CatBreedImageData
 import com.example.catchallenge.domain.repo.CatBreedRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,7 +70,10 @@ class DetailViewModel @Inject constructor(
             temperament = "Affectionate, social, playful, and intelligent",
             description = "The Siamese cat is one of the first distinctly " +
                     "recognized breeds of Asian cat.",
-            imageUrl = "https://cdn2.thecatapi.com/images/2v0.jpg",
+            image = CatBreedImageData(
+                imageId = "123",
+                url = "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg"
+            ),
         )
     }
 

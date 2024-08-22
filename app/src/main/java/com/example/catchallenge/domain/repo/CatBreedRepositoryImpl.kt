@@ -5,6 +5,7 @@ import com.example.catchallenge.data.local.CatBreedEntity
 import com.example.catchallenge.data.local.CatBreedDatabase
 import com.example.catchallenge.data.remote.CatBreedService
 import com.example.catchallenge.domain.model.CatBreed
+import com.example.catchallenge.domain.model.CatBreedImageData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -49,7 +50,8 @@ fun CatBreed.toCatBreedEntity(): CatBreedEntity {
         name = name,
         temperament = temperament,
         description = description,
-        imageUrl = imageUrl,
+        url = this.image?.url,
+        imageId = this.image?.imageId,
         isFavourite = isFavourite
     )
 }
@@ -60,7 +62,10 @@ fun CatBreedEntity.toCatBreed(): CatBreed {
         name = name,
         temperament = temperament,
         description = description,
-        imageUrl = imageUrl,
+        image = CatBreedImageData(
+            imageId = imageId,
+            url = url
+        ),
         isFavourite = isFavourite
     )
 }

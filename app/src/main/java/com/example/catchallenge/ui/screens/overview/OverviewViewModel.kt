@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
+import com.example.catchallenge.domain.model.CatBreedImageData
 import com.example.catchallenge.domain.repo.CatBreedRepository
-import com.example.catchallenge.ui.screens.detail.CatBreedDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,27 +23,6 @@ class OverviewViewModel @Inject constructor(
 
     private val _catBreeds = MutableStateFlow<List<CatBreed>>(emptyList())
     val catBreeds: StateFlow<List<CatBreed>> = _catBreeds.asStateFlow()
-
-    private val catBreedsMock: List<CatBreed> = listOf(
-        CatBreed("1", "Breed 1"),
-        CatBreed("2", "Breed 2"),
-        CatBreed("3", "Breed 3"),
-        CatBreed("4", "Breed 4"),
-        CatBreed("5", "Breed 5"),
-        CatBreed("6", "Breed 6"),
-        CatBreed("7", "Breed 7"),
-        CatBreed("8", "Breed 8"),
-        CatBreed("9", "Breed 9"),
-        CatBreed("10", "Breed 10"),
-        CatBreed("11", "Breed 11"),
-        CatBreed("12", "Breed 12"),
-        CatBreed("13", "Breed 13"),
-        CatBreed("14", "Breed 14"),
-        CatBreed("15", "Breed 15"),
-        CatBreed("16", "Breed 16"),
-        CatBreed("17", "Breed 17"),
-        CatBreed("18", "Breed 18")
-    )
 
     init {
         viewModelScope.launch {
@@ -71,6 +50,34 @@ class OverviewViewModel @Inject constructor(
         viewModelScope.launch {
             catBreedRepository.updateFavoriteStatus(breedName, isFavorite)
         }
+    }
+
+    companion object {
+        private val mockCatBreedImageData = CatBreedImageData(
+            imageId = "123",
+            url = "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg"
+        )
+
+        private val catBreedsMock: List<CatBreed> = listOf(
+            CatBreed("1", "Breed 1", image = mockCatBreedImageData),
+            CatBreed("2", "Breed 2", image = mockCatBreedImageData,),
+            CatBreed("3", "Breed 3", image = mockCatBreedImageData),
+            CatBreed("4", "Breed 4", image = mockCatBreedImageData),
+            CatBreed("5", "Breed 5", image = mockCatBreedImageData),
+            CatBreed("6", "Breed 6", image = mockCatBreedImageData),
+            CatBreed("7", "Breed 7", image = mockCatBreedImageData),
+            CatBreed("8", "Breed 8", image = mockCatBreedImageData),
+            CatBreed("9", "Breed 9", image = mockCatBreedImageData),
+            CatBreed("10", "Breed 10", image = mockCatBreedImageData),
+            CatBreed("11", "Breed 11", image = mockCatBreedImageData),
+            CatBreed("12", "Breed 12", image = mockCatBreedImageData),
+            CatBreed("13", "Breed 13", image = mockCatBreedImageData),
+            CatBreed("14", "Breed 14", image = mockCatBreedImageData),
+            CatBreed("15", "Breed 15", image = mockCatBreedImageData),
+            CatBreed("16", "Breed 16", image = mockCatBreedImageData),
+            CatBreed("17", "Breed 17", image = mockCatBreedImageData),
+            CatBreed("18", "Breed 18", image = mockCatBreedImageData)
+        )
     }
 
 }
