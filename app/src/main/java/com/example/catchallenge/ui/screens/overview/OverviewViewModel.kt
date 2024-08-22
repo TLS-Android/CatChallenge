@@ -1,5 +1,6 @@
 package com.example.catchallenge.ui.screens.overview
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
@@ -47,7 +48,9 @@ class OverviewViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
-                _uiState.value.catBreeds = breeds
+                _uiState.value = _uiState.value.copy(catBreeds = breeds)
+
+                Log.d("OverviewViewModel", "Breeds: $breeds")
             }
         }
 
@@ -56,11 +59,12 @@ class OverviewViewModel @Inject constructor(
 
     private fun updateUiState() {
         _uiState.value = OverviewState(
-            catBreeds = catBreeds.value,
+            catBreeds = uiState.value.catBreeds,
             searchQuery = "",
             isLoading = false,
             error = null
         )
+
     }
 
     fun updateFavoriteStatus(breedName: String, isFavorite: Boolean) {

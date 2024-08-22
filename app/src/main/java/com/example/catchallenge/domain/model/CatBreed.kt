@@ -31,8 +31,8 @@ data class CatBreed(
     @SerializedName("description")
     val description: String? = "",
 
-    @SerializedName("imageUrl")
-    val imageUrl: String? = "",
+    @SerializedName("url")
+    val url: String? = "",
 
     val isFavourite: Boolean = false
 )
