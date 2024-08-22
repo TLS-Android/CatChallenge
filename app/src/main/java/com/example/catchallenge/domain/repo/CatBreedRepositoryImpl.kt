@@ -23,17 +23,18 @@ class CatBreedRepositoryImpl @Inject constructor(
         emit(response)
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun persistCatBreeds(catBreeds: List<CatBreed>) {
+        val catBreedEntities = catBreeds.map { it.toCatBreedEntity() }
+        catBreedDao.insertCatBreeds(catBreedEntities)
+    }
+
+    override fun getAllCatBreedsFromLocalStorage(): Flow<List<CatBreedEntity>> =
+        catBreedDao.fetchAllCatBreeds().flowOn(Dispatchers.IO)
+
+    override fun getSingleCatBreedById(breedId: String): Flow<CatBreedEntity> =
+        catBreedDao.fetchSingleCatBreedById(breedId).flowOn(Dispatchers.IO)
 
     //region Favourites
-
-    override fun searchCatBreeds(query: String): Flow<List<CatBreed>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCatBreedById(catBreedId: String): Flow<CatBreed> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean) {
         catBreedDao.updateFavoriteStatus(breedId, isFavorite)
     }

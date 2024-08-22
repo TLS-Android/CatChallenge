@@ -28,6 +28,7 @@ class OverviewViewModel @Inject constructor(
         viewModelScope.launch {
             catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
                 _uiState.value = _uiState.value.copy(catBreeds = breeds)
+                catBreedRepository.persistCatBreeds(breeds)
 
                 Log.d("OverviewViewModel", "Breeds: $breeds")
             }

@@ -1,5 +1,6 @@
 package com.example.catchallenge.data.local
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 interface CatBreedDao {
     @Query("SELECT * FROM cat_breeds")
     fun fetchAllCatBreeds(): Flow<List<CatBreedEntity>>
+
+    @Query("SELECT * FROM cat_breeds WHERE id = :breedId")
+    fun fetchSingleCatBreedById(breedId: String): Flow<CatBreedEntity>
 
     @Query("SELECT * FROM cat_breeds WHERE id LIKE '%' || :query || '%'")
     fun searchCatBreeds(query: String): Flow<List<CatBreedEntity>>

@@ -48,7 +48,7 @@ fun OverviewScreen(
     viewModel: OverviewViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    Log.d("OverviewScreen", "UiState: $uiState")
+    //Log.d("OverviewScreen", "UiState: $uiState")
     var isLoading by remember { mutableStateOf(true) }
 
     if (isLoading) {

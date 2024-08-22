@@ -1,16 +1,17 @@
 package com.example.catchallenge.ui.screens.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
 import com.example.catchallenge.domain.model.CatBreedImageData
 import com.example.catchallenge.domain.repo.CatBreedRepository
+import com.example.catchallenge.domain.repo.toCatBreed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,42 +24,31 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CatBreedDetailState())
     val uiState: StateFlow<CatBreedDetailState> = _uiState.asStateFlow()
 
-    private var mockCatBreed : CatBreed? = null
+    private var selectedCatBreed : CatBreed? = null
 
     init {
         savedStateHandle.get<String>("breedId")?.let { breedId ->
-            //getCatBreed(breedId)
-            mockCatBreed = getBreedById(breedId)
+            Log.d("DetailViewModel", "breedId: $breedId")
+            viewModelScope.launch {
+                repository.getSingleCatBreedById(breedId)
+                    .collect { catBreedEntity ->
+                        selectedCatBreed = catBreedEntity.toCatBreed()
+                        _uiState.value = _uiState.value.copy(selectedCatBreed)
+                        Log.d("DetailViewModel", "selectedCatBreed: $selectedCatBreed")
+                        Log.d("DetailViewModel", "current breed: ${uiState.value.catBreed}")
+                    }
+            }
             updateUiState()
         }
     }
 
-    fun updateUiState() {
+    private fun updateUiState() {
         _uiState.value = CatBreedDetailState(
-            catBreed = mockCatBreed,
+            catBreed = selectedCatBreed,
             isLoading = false,
             error = null
         )
-    }
 
-    private fun getCatBreed(breedId: String) {
-        /*
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            try {
-                val catBreed: CatBreed? = repository.getCatBreedById(breedId).firstOrNull()
-                _uiState.value = _uiState.value.copy(
-                    catBreed = catBreed,
-                    isLoading = false
-                )
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Error fetching breed details",
-                    isLoading = false
-                )
-            }
-        }
-        */
     }
 
     //TODO: Add logic
