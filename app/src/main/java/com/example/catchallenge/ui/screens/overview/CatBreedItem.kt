@@ -43,7 +43,6 @@ fun CatBreedItem(
     onFavoriteClick: () -> Unit,
     navController: NavController
 ) {
-    //Log.d("CatBreedItem", "url: ${breed.image?.url}")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -73,13 +72,13 @@ fun CatBreedItem(
                 onClick = onFavoriteClick,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = (24).dp, y = 24.dp)
+                    .offset(x = (8).dp, y = (-24).dp)
             ) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
                     contentDescription = "Favorite",
                     tint = if (isFavorite) Color.Yellow else Color.White,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(28.dp)
                 )
             }
         }

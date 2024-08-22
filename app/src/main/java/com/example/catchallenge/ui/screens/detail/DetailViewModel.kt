@@ -32,13 +32,17 @@ class DetailViewModel @Inject constructor(
             viewModelScope.launch {
                 repository.getSingleCatBreedById(breedId)
                     .collect { catBreedEntity ->
-                        selectedCatBreed = catBreedEntity.toCatBreed()
-                        _uiState.value = _uiState.value.copy(selectedCatBreed)
-                        Log.d("DetailViewModel", "selectedCatBreed: $selectedCatBreed")
-                        Log.d("DetailViewModel", "current breed: ${uiState.value.catBreed}")
+                        Log.d("DetailViewModel", "catBreedEntity: ${catBreedEntity.toCatBreed()}")
+
+                        /*
+                            _uiState.value = _uiState.value.copy(
+                                catBreed = catBreedEntity.toCatBreed()
+                            )
+                        */
+
                     }
             }
-            updateUiState()
+            //updateUiState()
         }
     }
 

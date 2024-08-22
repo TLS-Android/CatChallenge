@@ -1,6 +1,5 @@
 package com.example.catchallenge.ui.screens.overview
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
