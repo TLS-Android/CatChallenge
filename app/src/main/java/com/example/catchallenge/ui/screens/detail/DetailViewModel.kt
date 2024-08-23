@@ -1,19 +1,16 @@
 package com.example.catchallenge.ui.screens.detail
 
 import android.util.Log
-import androidx.activity.result.launch
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
-import com.example.catchallenge.domain.model.CatBreedImageData
 import com.example.catchallenge.domain.repo.CatBreedRepository
 import com.example.catchallenge.domain.repo.toCatBreed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,13 +26,8 @@ class DetailViewModel @Inject constructor(
     private val _selectedCatBreed = MutableStateFlow<CatBreed?>(null)
     val selectedCatBreed: StateFlow<CatBreed?> = _selectedCatBreed.asStateFlow()
 
-    //private var selectedCatBreed : CatBreed? = null
-
-    private var newBreedId : String = ""
-
     init {
         savedStateHandle.get<String>("breedId")?.let { breedId ->
-            newBreedId = breedId
             Log.d("DetailViewModel", "breedId: $breedId")
             viewModelScope.launch {
                 repository.getSingleCatBreedById(breedId)?.let { catBreedEntity ->
@@ -48,10 +40,11 @@ class DetailViewModel @Inject constructor(
     }
 
     fun toggleFavorite(breed: CatBreed) {
+        Log.d("DetailViewModel", "toggleFavorite called")
         viewModelScope.launch {
-            val updatedCatBreed = breed.copy(isFavourite = !breed.isFavourite)
-            repository.updateCatBreed(updatedCatBreed)
-            _uiState.value = uiState.value.copy(catBreed = updatedCatBreed)
+            val updatedIsFavorite = !breed.isFavourite
+            repository.updateFavoriteStatus(breed.id, updatedIsFavorite)
+            _uiState.value = uiState.value.copy(catBreed = breed.copy(isFavourite = updatedIsFavorite))
             Log.d(
                 "DetailViewModel",
                 "Ui State Value Favourite: ${_uiState.value.catBreed?.isFavourite}"
