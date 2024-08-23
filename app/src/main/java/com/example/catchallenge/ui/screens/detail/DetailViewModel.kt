@@ -16,25 +16,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val repository: CatBreedRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CatBreedDetailState())
     val uiState: StateFlow<CatBreedDetailState> = _uiState.asStateFlow()
 
-    private val _selectedCatBreed = MutableStateFlow<CatBreed?>(null)
-    val selectedCatBreed: StateFlow<CatBreed?> = _selectedCatBreed.asStateFlow()
-
     init {
         savedStateHandle.get<String>("breedId")?.let { breedId ->
             Log.d("DetailViewModel", "breedId: $breedId")
-            viewModelScope.launch {
+            fetchSelectedCatData(breedId)
+        }
+    }
+
+    private fun fetchSelectedCatData(breedId: String) {
+        viewModelScope.launch {
+            try {
                 repository.getSingleCatBreedById(breedId)?.let { catBreedEntity ->
                     _uiState.value = _uiState.value.copy(
                         catBreed = catBreedEntity.toCatBreed()
                     )
                 }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message
+                )
             }
         }
     }
@@ -42,14 +50,22 @@ class DetailViewModel @Inject constructor(
     fun toggleFavorite(breed: CatBreed) {
         Log.d("DetailViewModel", "toggleFavorite called")
         viewModelScope.launch {
-            val updatedIsFavorite = !breed.isFavourite
-            repository.updateFavoriteStatus(breed.id, updatedIsFavorite)
-            _uiState.value =
-                uiState.value.copy(catBreed = breed.copy(isFavourite = updatedIsFavorite))
-            Log.d(
-                "DetailViewModel",
-                "Ui State Value Favourite: ${_uiState.value.catBreed?.isFavourite}"
-            )
+            try {
+                val updatedIsFavorite = !breed.isFavourite
+                repository.updateFavoriteStatus(breed.id, updatedIsFavorite)
+                _uiState.value =
+                    uiState.value.copy(catBreed = breed.copy(isFavourite = updatedIsFavorite))
+                Log.d(
+                    "DetailViewModel",
+                    "Ui State Value Favourite: ${_uiState.value.catBreed?.isFavourite}"
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message
+                )
+            }
+
         }
     }
 

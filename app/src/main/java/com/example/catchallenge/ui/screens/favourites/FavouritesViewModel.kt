@@ -22,9 +22,6 @@ class FavouritesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(FavoritesUIState())
     val uiState: StateFlow<FavoritesUIState> = _uiState.asStateFlow()
 
-    private val _favoriteCatBreeds = MutableStateFlow<List<CatBreed>>(emptyList())
-    val favoriteCatBreeds: StateFlow<List<CatBreed>> = _favoriteCatBreeds.asStateFlow()
-
     init {
         getFavouriteCatBreeds()
         updateUiState()
@@ -46,9 +43,8 @@ class FavouritesViewModel @Inject constructor(
                     catBreedEntities.map { it.toCatBreed() }
                 }
                 .collect { catBreeds ->
-                    _favoriteCatBreeds.value = catBreeds
                     _uiState.value = uiState.value.copy(
-                        favoriteCatBreeds = favoriteCatBreeds.value
+                        favoriteCatBreeds = catBreeds
                     )
                 }
         }
