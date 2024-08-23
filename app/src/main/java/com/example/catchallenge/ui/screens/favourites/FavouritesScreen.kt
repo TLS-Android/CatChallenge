@@ -62,7 +62,9 @@ fun FavouritesScreen(
                             index,
                             breed,
                             isFavorite = breed.isFavourite,
-                            onFavoriteClick = {},
+                            onFavoriteClick = {
+                                viewModel.toggleFavorite(breed)
+                            },
                             navController = navController
                         )
                     }

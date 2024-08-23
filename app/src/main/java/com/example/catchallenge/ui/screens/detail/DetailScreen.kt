@@ -1,5 +1,6 @@
 package com.example.catchallenge.ui.screens.detail
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,9 +9,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -36,7 +40,6 @@ import com.example.catchallenge.domain.model.CatBreedImageData
 fun DetailScreen(
     modifier: Modifier,
     viewModel: DetailViewModel = hiltViewModel(),
-    onToggleFavorite: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -56,10 +59,11 @@ fun DetailScreen(
                     viewModel.toggleFavorite(catBreed)
                 }) {
                     Icon(
-                        imageVector = if (catBreed.isFavourite) Icons.Filled.Star
-                        else Icons.Outlined.Star,
+                        imageVector = if (catBreed.isFavourite)
+                            Icons.Filled.Star else Icons.Sharp.Star,
                         contentDescription = if (catBreed.isFavourite)
-                            "Remove from favorites" else "Add to favorites"
+                            "Remove from favorites" else "Add to favorites",
+                        tint = if (catBreed.isFavourite) Color.Yellow else Color.Black,
                     )
                 }
             }
@@ -117,6 +121,5 @@ fun DetailScreenPreview() {
     DetailScreen(
         modifier = Modifier,
         viewModel = TODO(),
-        onToggleFavorite = { },
     )
 }

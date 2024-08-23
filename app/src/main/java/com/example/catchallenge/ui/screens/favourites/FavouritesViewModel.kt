@@ -1,5 +1,6 @@
 package com.example.catchallenge.ui.screens.favourites
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
@@ -50,6 +51,29 @@ class FavouritesViewModel @Inject constructor(
                         favoriteCatBreeds = favoriteCatBreeds.value
                     )
                 }
+        }
+    }
+
+    fun toggleFavorite(breed: CatBreed) {
+        viewModelScope.launch {
+            val updatedIsFavorite = !breed.isFavourite
+            catBreedRepository.updateFavoriteStatus(breed.id, updatedIsFavorite)
+
+            val updatedCatBreeds = uiState.value.favoriteCatBreeds.map {
+                if (it.id == breed.id) {
+                    it.copy(isFavourite = updatedIsFavorite)
+                } else {
+                    it
+                }
+            }
+
+            _uiState.value = uiState.value.copy(favoriteCatBreeds = updatedCatBreeds)
+
+            Log.d(
+                "OverviewViewModel",
+                "Ui State Value Favourite: " +
+                        "${_uiState.value.favoriteCatBreeds.find { it.id == breed.id }?.isFavourite}"
+            )
         }
     }
 }
