@@ -52,7 +52,9 @@ fun DetailScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
-                IconButton(onClick = onToggleFavorite) {
+                IconButton(onClick = {
+                    viewModel.toggleFavorite(catBreed)
+                }) {
                     Icon(
                         imageVector = if (catBreed.isFavourite) Icons.Filled.Star
                         else Icons.Outlined.Star,

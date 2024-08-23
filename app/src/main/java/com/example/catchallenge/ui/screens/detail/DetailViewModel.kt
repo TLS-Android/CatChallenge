@@ -49,12 +49,13 @@ class DetailViewModel @Inject constructor(
 
     fun toggleFavorite(breed: CatBreed) {
         viewModelScope.launch {
-            val currentCatBreed = uiState.value.catBreed
-            if (currentCatBreed != null) {
-                val updatedCatBreed = currentCatBreed.copy(isFavourite = !currentCatBreed.isFavourite)
-                repository.updateCatBreed(updatedCatBreed)
-                _uiState.value = uiState.value.copy(catBreed = updatedCatBreed)
-            }
+            val updatedCatBreed = breed.copy(isFavourite = !breed.isFavourite)
+            repository.updateCatBreed(updatedCatBreed)
+            _uiState.value = uiState.value.copy(catBreed = updatedCatBreed)
+            Log.d(
+                "DetailViewModel",
+                "Ui State Value Favourite: ${_uiState.value.catBreed?.isFavourite}"
+            )
         }
     }
 
