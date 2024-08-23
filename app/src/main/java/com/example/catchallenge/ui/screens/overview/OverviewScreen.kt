@@ -110,7 +110,7 @@ fun OverviewScreen(
                     CatBreedItem(
                         index,
                         breed,
-                        isFavorite = false,
+                        isFavorite = breed.isFavourite,
                         onFavoriteClick = {
                             viewModel.toggleFavorite(breed)
                         },

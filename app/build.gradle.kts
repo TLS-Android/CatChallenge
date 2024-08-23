@@ -79,6 +79,7 @@ dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit.junit)
     ksp(libs.androidx.room.compiler)
 
@@ -107,6 +108,7 @@ dependencies {
     testImplementation(libs.mockito.android)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

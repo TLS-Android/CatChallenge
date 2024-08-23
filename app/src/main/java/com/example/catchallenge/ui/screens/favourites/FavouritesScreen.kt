@@ -61,7 +61,7 @@ fun FavouritesScreen(
                         CatBreedItem(
                             index,
                             breed,
-                            isFavorite = false,
+                            isFavorite = breed.isFavourite,
                             onFavoriteClick = {},
                             navController = navController
                         )

@@ -3,9 +3,11 @@ package com.example.catchallenge.ui.screens.overview
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.catchallenge.data.local.SharedPreferenceHelper
 import com.example.catchallenge.domain.model.CatBreed
 import com.example.catchallenge.domain.model.CatBreedImageData
 import com.example.catchallenge.domain.repo.CatBreedRepository
+import com.example.catchallenge.domain.repo.toCatBreed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val catBreedRepository: CatBreedRepository,
+    private val sharedPreferenceHelper: SharedPreferenceHelper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OverviewState())
@@ -26,26 +29,27 @@ class OverviewViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
-                _uiState.value = _uiState.value.copy(catBreeds = breeds)
-                catBreedRepository.persistCatBreeds(breeds)
-
-                Log.d("OverviewViewModel", "Breeds: $breeds")
+            if (!sharedPreferenceHelper.hasFetchedInitialData()) {
+                Log.d("OverviewViewModel", "No local data. Fetching from remote.")
+                catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
+                    _uiState.value = _uiState.value.copy(catBreeds = breeds)
+                    catBreedRepository.persistCatBreeds(breeds)
+                    sharedPreferenceHelper.setFetchedInitialData(true)
+                    Log.d("OverviewViewModel", "Breeds from remote: $breeds")
+                }
+            } else {
+                Log.d("OverviewViewModel", "Local data available. Using local data.")
+                catBreedRepository.getAllCatBreedsFromLocalStorage().collect { breeds ->
+                    val transformedBreeds = breeds.map {
+                        it.toCatBreed()
+                    }
+                    _uiState.value = _uiState.value.copy(catBreeds = transformedBreeds)
+                    Log.d("OverviewViewModel", "Breeds from local: $breeds")
+                }
             }
         }
-
-        updateUiState()
     }
 
-    private fun updateUiState() {
-        _uiState.value = OverviewState(
-            catBreeds = uiState.value.catBreeds,
-            searchQuery = "",
-            isLoading = false,
-            error = null
-        )
-
-    }
 
     fun toggleFavorite(breed: CatBreed) {
         viewModelScope.launch {
@@ -75,7 +79,7 @@ class OverviewViewModel @Inject constructor(
             url = "https://cdn2.thecatapi.com/images/OGTWqNNOt.jpg"
         )
 
-        private val catBreedsMock: List<CatBreed> = listOf(
+        val catBreedsMock: List<CatBreed> = listOf(
             CatBreed("1", "Breed 1", image = mockCatBreedImageData),
             CatBreed("2", "Breed 2", image = mockCatBreedImageData,),
             CatBreed("3", "Breed 3", image = mockCatBreedImageData),
