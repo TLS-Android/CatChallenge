@@ -1,10 +1,11 @@
-package com.example.catchallenge.ui.screens.favourites
+package com.example.ui.screens.favourites
 
 import com.example.catchallenge.domain.repo.CatBreedRepository
+import com.example.catchallenge.ui.screens.favourites.FavouritesViewModel
 
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.mock
+import org.mockito.Mockito.mock
 
 class FavouritesViewModelTest {
 
@@ -13,9 +14,6 @@ class FavouritesViewModelTest {
 
     @Before
     fun setUp() {
-        repository = mock()
-        viewModel = FavouritesViewModel(repository)
-
     }
 
     @Test

@@ -4,7 +4,9 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Context) {
+class SharedPreferenceHelper @Inject constructor(
+    @ApplicationContext context: Context
+) {
 
     private val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
