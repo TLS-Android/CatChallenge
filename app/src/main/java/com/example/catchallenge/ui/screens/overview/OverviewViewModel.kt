@@ -29,24 +29,36 @@ class OverviewViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            if (!sharedPreferenceHelper.hasFetchedInitialData()) {
-                Log.d("OverviewViewModel", "No local data. Fetching from remote.")
-                catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
-                    _uiState.value = _uiState.value.copy(catBreeds = breeds)
-                    catBreedRepository.persistCatBreeds(breeds)
-                    sharedPreferenceHelper.setFetchedInitialData(true)
-                    Log.d("OverviewViewModel", "Breeds from remote: $breeds")
-                }
-            } else {
-                Log.d("OverviewViewModel", "Local data available. Using local data.")
-                catBreedRepository.getAllCatBreedsFromLocalStorage().collect { breeds ->
-                    val transformedBreeds = breeds.map {
-                        it.toCatBreed()
+            try {
+                if (!sharedPreferenceHelper.hasFetchedInitialData()) {
+                    Log.d("OverviewViewModel", "No local data. Fetching from remote.")
+                    catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
+                        _uiState.value = _uiState.value.copy(
+                            catBreeds = breeds,
+                            isLoading = false
+                        )
+                        catBreedRepository.persistCatBreeds(breeds)
+                        sharedPreferenceHelper.setFetchedInitialData(true)
+                        Log.d("OverviewViewModel", "Breeds from remote: $breeds")
                     }
-                    _uiState.value = _uiState.value.copy(catBreeds = transformedBreeds)
-                    Log.d("OverviewViewModel", "Breeds from local: $breeds")
+                } else {
+                    Log.d("OverviewViewModel", "Local data available. Using local data.")
+                    catBreedRepository.getAllCatBreedsFromLocalStorage().collect { breeds ->
+                        val transformedBreeds = breeds.map {
+                            it.toCatBreed()
+                        }
+                        _uiState.value = _uiState.value.copy(catBreeds = transformedBreeds)
+                        Log.d("OverviewViewModel", "Breeds from local: $breeds")
+                    }
                 }
+
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message,
+                    isLoading = false
+                )
             }
+
         }
     }
 
@@ -68,7 +80,8 @@ class OverviewViewModel @Inject constructor(
 
             Log.d(
                 "OverviewViewModel",
-                "Ui State Value Favourite: ${_uiState.value.catBreeds.find { it.id == breed.id }?.isFavourite}"
+                "Ui State Value Favourite: " +
+                    "${_uiState.value.catBreeds.find { it.id == breed.id }?.isFavourite}"
             )
         }
     }
@@ -106,7 +119,7 @@ class OverviewViewModel @Inject constructor(
 data class OverviewState(
     var catBreeds: List<CatBreed> = emptyList(),
     val searchQuery: String = "",
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val error: String? = null
 )
 

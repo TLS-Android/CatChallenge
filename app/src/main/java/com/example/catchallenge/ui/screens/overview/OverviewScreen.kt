@@ -47,9 +47,8 @@ fun OverviewScreen(
     viewModel: OverviewViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var isLoading by remember { mutableStateOf(true) }
 
-    if (isLoading) {
+    if (uiState.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
@@ -120,10 +119,6 @@ fun OverviewScreen(
             }
 
         }
-    }
-
-    LaunchedEffect(Unit) {
-        isLoading = false
     }
 }
 
