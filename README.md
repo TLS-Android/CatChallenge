@@ -29,7 +29,7 @@ The app fetches data from The Cat API and displays it in a user-friendly interfa
 
 * **JUnit:** For writing and running unit tests.
 
-* **Mockito:** Used for creating mock objects and stubbing dependencies during testing.
+* **Mockk:** Used for creating mock objects and dependencies.
 
 
 ## Architecture
