@@ -24,9 +24,6 @@ class OverviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OverviewState())
     val uiState: StateFlow<OverviewState> = _uiState.asStateFlow()
 
-    private val _catBreeds = MutableStateFlow<List<CatBreed>>(emptyList())
-    val catBreeds: StateFlow<List<CatBreed>> = _catBreeds.asStateFlow()
-
     init {
         viewModelScope.launch {
             if (!sharedPreferenceHelper.hasFetchedInitialData()) {
@@ -58,13 +55,20 @@ class OverviewViewModel @Inject constructor(
 
     fun refreshCatBreeds() {
         viewModelScope.launch {
-            catBreedRepository.getAllCatBreedsFromLocalStorage().collect { breeds ->
-                val transformedBreeds = breeds.map {
-                    it.toCatBreed()
+            try {
+                catBreedRepository.getAllCatBreedsFromLocalStorage().collect { breeds ->
+                    val transformedBreeds = breeds.map {
+                        it.toCatBreed()
+                    }
+                    _uiState.value = _uiState.value.copy(
+                        catBreeds = transformedBreeds,
+                        isLoading = false)
                 }
+            } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    catBreeds = transformedBreeds,
-                    isLoading = false)
+                    error = e.message,
+                    isLoading = false
+                )
             }
         }
     }

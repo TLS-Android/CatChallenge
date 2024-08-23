@@ -40,39 +40,54 @@ class FavouritesViewModel @Inject constructor(
 
     private fun getFavouriteCatBreeds() {
         viewModelScope.launch {
-            catBreedRepository.getFavouriteCatBreeds()
-                .map { catBreedEntities ->
-                    catBreedEntities.map { it.toCatBreed() }
-                }
-                .collect { catBreeds ->
-                    _favoriteCatBreeds.value = catBreeds
-                    _uiState.value = uiState.value.copy(
-                        favoriteCatBreeds = favoriteCatBreeds.value
-                    )
-                }
+            try {
+                catBreedRepository.getFavouriteCatBreeds()
+                    .map { catBreedEntities ->
+                        catBreedEntities.map { it.toCatBreed() }
+                    }
+                    .collect { catBreeds ->
+                        _favoriteCatBreeds.value = catBreeds
+                        _uiState.value = uiState.value.copy(
+                            favoriteCatBreeds = favoriteCatBreeds.value
+                        )
+                    }
+
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message,
+                    isLoading = false
+                )
+            }
         }
     }
 
     fun toggleFavorite(breed: CatBreed) {
         viewModelScope.launch {
-            val updatedIsFavorite = !breed.isFavourite
-            catBreedRepository.updateFavoriteStatus(breed.id, updatedIsFavorite)
+            try {
+                val updatedIsFavorite = !breed.isFavourite
+                catBreedRepository.updateFavoriteStatus(breed.id, updatedIsFavorite)
 
-            val updatedCatBreeds = uiState.value.favoriteCatBreeds.map {
-                if (it.id == breed.id) {
-                    it.copy(isFavourite = updatedIsFavorite)
-                } else {
-                    it
+                val updatedCatBreeds = uiState.value.favoriteCatBreeds.map {
+                    if (it.id == breed.id) {
+                        it.copy(isFavourite = updatedIsFavorite)
+                    } else {
+                        it
+                    }
                 }
+
+                _uiState.value = uiState.value.copy(favoriteCatBreeds = updatedCatBreeds)
+
+                Log.d(
+                    "OverviewViewModel",
+                    "Ui State Value Favourite: " +
+                            "${_uiState.value.favoriteCatBreeds.find { it.id == breed.id }?.isFavourite}"
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message,
+                    isLoading = false
+                )
             }
-
-            _uiState.value = uiState.value.copy(favoriteCatBreeds = updatedCatBreeds)
-
-            Log.d(
-                "OverviewViewModel",
-                "Ui State Value Favourite: " +
-                        "${_uiState.value.favoriteCatBreeds.find { it.id == breed.id }?.isFavourite}"
-            )
         }
     }
 }
