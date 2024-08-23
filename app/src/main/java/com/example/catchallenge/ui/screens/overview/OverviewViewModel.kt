@@ -32,7 +32,10 @@ class OverviewViewModel @Inject constructor(
             if (!sharedPreferenceHelper.hasFetchedInitialData()) {
                 Log.d("OverviewViewModel", "No local data. Fetching from remote.")
                 catBreedRepository.fetchAllCatBreedsFromRemote().collect { breeds ->
-                    _uiState.value = _uiState.value.copy(catBreeds = breeds)
+                    _uiState.value = _uiState.value.copy(
+                        catBreeds = breeds,
+                        isLoading = false
+                    )
                     catBreedRepository.persistCatBreeds(breeds)
                     sharedPreferenceHelper.setFetchedInitialData(true)
                     Log.d("OverviewViewModel", "Breeds from remote: $breeds")
@@ -43,13 +46,28 @@ class OverviewViewModel @Inject constructor(
                     val transformedBreeds = breeds.map {
                         it.toCatBreed()
                     }
-                    _uiState.value = _uiState.value.copy(catBreeds = transformedBreeds)
+                    _uiState.value = _uiState.value.copy(
+                        catBreeds = transformedBreeds,
+                        isLoading = false
+                    )
                     Log.d("OverviewViewModel", "Breeds from local: $breeds")
                 }
             }
         }
     }
 
+    fun refreshCatBreeds() {
+        viewModelScope.launch {
+            catBreedRepository.getAllCatBreedsFromLocalStorage().collect { breeds ->
+                val transformedBreeds = breeds.map {
+                    it.toCatBreed()
+                }
+                _uiState.value = _uiState.value.copy(
+                    catBreeds = transformedBreeds,
+                    isLoading = false)
+            }
+        }
+    }
 
     fun toggleFavorite(breed: CatBreed) {
         viewModelScope.launch {

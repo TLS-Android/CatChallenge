@@ -33,10 +33,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
@@ -49,11 +52,9 @@ fun OverviewScreen(
     val uiState by viewModel.uiState.collectAsState()
     var isLoading by remember { mutableStateOf(true) }
 
-    if (isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    } else {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+
         Column(modifier = modifier.padding(48.dp)) {
             Text(
                 text = "Cats App",
@@ -120,10 +121,12 @@ fun OverviewScreen(
             }
 
         }
-    }
 
-    LaunchedEffect(Unit) {
-        isLoading = false
+
+    LaunchedEffect(key1 = lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewModel.refreshCatBreeds()
+        }
     }
 }
 
