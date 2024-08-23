@@ -124,7 +124,7 @@ class OverviewViewModel @Inject constructor(
 data class OverviewState(
     var catBreeds: List<CatBreed> = emptyList(),
     val searchQuery: String = "",
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val error: String? = null
 )
 

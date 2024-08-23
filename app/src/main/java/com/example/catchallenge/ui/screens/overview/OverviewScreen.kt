@@ -50,11 +50,14 @@ fun OverviewScreen(
     viewModel: OverviewViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var isLoading by remember { mutableStateOf(true) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
-
+    if (uiState.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    } else {
         Column(modifier = modifier.padding(48.dp)) {
             Text(
                 text = "Cats App",
@@ -121,7 +124,7 @@ fun OverviewScreen(
             }
 
         }
-
+    }
 
     LaunchedEffect(key1 = lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
