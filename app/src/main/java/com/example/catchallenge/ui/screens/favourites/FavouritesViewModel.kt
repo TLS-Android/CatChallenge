@@ -22,9 +22,6 @@ class FavouritesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(FavoritesUIState())
     val uiState: StateFlow<FavoritesUIState> = _uiState.asStateFlow()
 
-    private val _favoriteCatBreeds = MutableStateFlow<List<CatBreed>>(emptyList())
-    val favoriteCatBreeds: StateFlow<List<CatBreed>> = _favoriteCatBreeds.asStateFlow()
-
     init {
         getFavouriteCatBreeds()
         updateUiState()
@@ -33,7 +30,6 @@ class FavouritesViewModel @Inject constructor(
     private fun updateUiState() {
         _uiState.value = FavoritesUIState(
             favoriteCatBreeds = uiState.value.favoriteCatBreeds,
-            searchQuery = "",
             isLoading = false,
             error = null
         )
@@ -41,46 +37,58 @@ class FavouritesViewModel @Inject constructor(
 
     private fun getFavouriteCatBreeds() {
         viewModelScope.launch {
-            catBreedRepository.getFavouriteCatBreeds()
-                .map { catBreedEntities ->
-                    catBreedEntities.map { it.toCatBreed() }
-                }
-                .collect { catBreeds ->
-                    _favoriteCatBreeds.value = catBreeds
-                    _uiState.value = uiState.value.copy(
-                        favoriteCatBreeds = favoriteCatBreeds.value
-                    )
-                }
+            try {
+                catBreedRepository.getFavouriteCatBreeds()
+                    .map { catBreedEntities ->
+                        catBreedEntities.map { it.toCatBreed() }
+                    }
+                    .collect { catBreeds ->
+                        _uiState.value = uiState.value.copy(
+                            favoriteCatBreeds = catBreeds
+                        )
+                    }
+            } catch (e: Exception) {
+                _uiState.value = uiState.value.copy(
+                    error = e.message,
+                    isLoading = false
+                )
+            }
+
         }
     }
 
     fun toggleFavorite(breed: CatBreed) {
         viewModelScope.launch {
-            val updatedIsFavorite = !breed.isFavourite
-            catBreedRepository.updateFavoriteStatus(breed.id, updatedIsFavorite)
+            try {
+                val updatedIsFavorite = !breed.isFavourite
+                catBreedRepository.updateFavoriteStatus(breed.id, updatedIsFavorite)
 
-            val updatedCatBreeds = uiState.value.favoriteCatBreeds.map {
-                if (it.id == breed.id) {
-                    it.copy(isFavourite = updatedIsFavorite)
-                } else {
-                    it
+                val updatedCatBreeds = uiState.value.favoriteCatBreeds.map {
+                    if (it.id == breed.id) {
+                        it.copy(isFavourite = updatedIsFavorite)
+                    } else {
+                        it
+                    }
                 }
+
+                _uiState.value = uiState.value.copy(favoriteCatBreeds = updatedCatBreeds)
+
+                Log.d("OverviewViewModel", "Ui State Value Favourite: " +
+                        "${_uiState.value.favoriteCatBreeds.find { it.id == breed.id }?.isFavourite}"
+                )
+            } catch (e: Exception) {
+                _uiState.value = uiState.value.copy(
+                    error = e.message,
+                    isLoading = false
+                )
             }
 
-            _uiState.value = uiState.value.copy(favoriteCatBreeds = updatedCatBreeds)
-
-            Log.d(
-                "OverviewViewModel",
-                "Ui State Value Favourite: " +
-                        "${_uiState.value.favoriteCatBreeds.find { it.id == breed.id }?.isFavourite}"
-            )
         }
     }
 }
 
 data class FavoritesUIState(
     val favoriteCatBreeds: List<CatBreed> = emptyList(),
-    val searchQuery: String = "",
     val isLoading: Boolean = false,
     val error: String? = null
 )

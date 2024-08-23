@@ -16,26 +16,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val repository: CatBreedRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CatBreedDetailState())
     val uiState: StateFlow<CatBreedDetailState> = _uiState.asStateFlow()
 
-    private val _selectedCatBreed = MutableStateFlow<CatBreed?>(null)
-    val selectedCatBreed: StateFlow<CatBreed?> = _selectedCatBreed.asStateFlow()
-
     init {
         savedStateHandle.get<String>("breedId")?.let { breedId ->
-            Log.d("DetailViewModel", "breedId: $breedId")
-            viewModelScope.launch {
-                repository.getSingleCatBreedById(breedId)?.let { catBreedEntity ->
-                    _uiState.value = _uiState.value.copy(
-                        catBreed = catBreedEntity.toCatBreed()
-                    )
-                }
-            }
+            Log.d("DetailViewModel", "Selected Breed Id: $breedId")
+            getSelectedCatBreedData(breedId)
+        }
+    }
+
+    private fun getSelectedCatBreedData(breedId: String) = viewModelScope.launch {
+        repository.getSingleCatBreedById(breedId)?.let { catBreedEntity ->
+            _uiState.value = _uiState.value.copy(
+                catBreed = catBreedEntity.toCatBreed()
+            )
         }
     }
 
