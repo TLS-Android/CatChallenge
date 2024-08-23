@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.catchallenge.domain.model.CatBreed
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,7 +19,7 @@ interface CatBreedDao {
     fun searchCatBreeds(query: String): Flow<List<CatBreedEntity>>
 
     @Query("SELECT * FROM cat_breeds WHERE isFavourite = 1")
-    fun getFavoriteCatBreeds(): Flow<List<CatBreed>>
+    fun getFavoriteCatBreeds(): Flow<List<CatBreedEntity>>
 
     @Query("UPDATE cat_breeds SET isFavourite = :isFavorite WHERE id = :breedId")
     suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean)

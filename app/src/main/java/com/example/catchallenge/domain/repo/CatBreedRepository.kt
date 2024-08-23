@@ -9,7 +9,7 @@ interface CatBreedRepository {
     fun getAllCatBreedsFromLocalStorage(): Flow<List<CatBreedEntity>>
     suspend fun getSingleCatBreedById(breedId: String): CatBreedEntity?
     suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean)
-    suspend fun getFavouriteCatBreeds(): Flow<List<CatBreed>>
+    suspend fun getFavouriteCatBreeds(): Flow<List<CatBreedEntity>>
 
 
     suspend fun persistCatBreeds(catBreeds: List<CatBreed>)

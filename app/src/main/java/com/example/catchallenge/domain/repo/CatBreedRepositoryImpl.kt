@@ -49,7 +49,7 @@ class CatBreedRepositoryImpl @Inject constructor(
         catBreedDao.updateFavoriteStatus(breedId, isFavorite)
     }
 
-    override suspend fun getFavouriteCatBreeds(): Flow<List<CatBreed>> {
+    override suspend fun getFavouriteCatBreeds(): Flow<List<CatBreedEntity>> {
         return catBreedDao.getFavoriteCatBreeds()
     }
     //endregion
