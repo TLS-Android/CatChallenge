@@ -12,6 +12,21 @@ android {
     namespace = "com.example.catchallenge"
     compileSdk = 34
 
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/LICENSE-notice.md"
+            excludes += "/META-INF/LICENSE.md"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.catchallenge"
         minSdk = 31
@@ -80,7 +95,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.junit.ktx)
-    testImplementation(libs.junit.junit)
     ksp(libs.androidx.room.compiler)
 
     // COMPOSE
@@ -103,16 +117,15 @@ dependencies {
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.okhttp.brotli)
 
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.mockito.android)
-    testImplementation(libs.mockito.kotlin)
+    //TESTING
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

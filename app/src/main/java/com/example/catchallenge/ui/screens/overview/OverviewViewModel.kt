@@ -73,6 +73,10 @@ class OverviewViewModel @Inject constructor(
         }
     }
 
+    fun setInitialCatBreeds(catBreeds: List<CatBreed>) {
+        _uiState.value = _uiState.value.copy(catBreeds = catBreeds)
+    }
+
     companion object {
         private val mockCatBreedImageData = CatBreedImageData(
             imageId = "123",
