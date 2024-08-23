@@ -9,17 +9,27 @@ The app fetches data from The Cat API and displays it in a user-friendly interfa
 
 ## Libraries and Technologies
 
-Jetpack Compose: Used for building the UI declaratively.
-Hilt: For dependency injection to manage dependencies effectively.
-OkHttp: Used with Retrofit to intercept network requests, add headers, enable logging, and handle caching.
-Retrofit: For making network requests to The Cat API.
-Glide: For loading and caching images efficiently.
-Room: For local data persistence.
-Kotlin Coroutines: For asynchronous programming and managing background tasks.
-Flow: For handling streams of data and observing changes.
-ViewModel: For managing UI-related data and handling interactions with the repository.
-JUnit: For writing and running unit tests.
-Mockito: Used for creating mock objects and stubbing dependencies during testing.
+* **Jetpack Compose:** Used for building the UI declaratively.
+
+* **Hilt:** For dependency injection to manage dependencies effectively.
+
+* **OkHttp:** Used with Retrofit to intercept network requests, add headers, enable logging, and handle caching.
+
+* **Retrofit:** For making network requests to The Cat API.
+
+* **Glide:** For loading and caching images efficiently.
+
+* **Room:** For local data persistence.
+
+* **Kotlin Coroutines:** For asynchronous programming and managing background tasks.
+
+* **Flow:** For handling streams of data and observing changes.
+
+* **ViewModel:** For managing UI-related data and handling interactions with the repository.
+
+* **JUnit:** For writing and running unit tests.
+
+* **Mockito:** Used for creating mock objects and stubbing dependencies during testing.
 
 
 ## Architecture
