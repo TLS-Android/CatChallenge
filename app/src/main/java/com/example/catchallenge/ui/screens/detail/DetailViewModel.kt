@@ -44,7 +44,8 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             val updatedIsFavorite = !breed.isFavourite
             repository.updateFavoriteStatus(breed.id, updatedIsFavorite)
-            _uiState.value = uiState.value.copy(catBreed = breed.copy(isFavourite = updatedIsFavorite))
+            _uiState.value =
+                uiState.value.copy(catBreed = breed.copy(isFavourite = updatedIsFavorite))
             Log.d(
                 "DetailViewModel",
                 "Ui State Value Favourite: ${_uiState.value.catBreed?.isFavourite}"

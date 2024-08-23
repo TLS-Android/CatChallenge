@@ -47,9 +47,25 @@ class OverviewViewModel @Inject constructor(
 
     }
 
-    fun updateFavoriteStatus(breedName: String, isFavorite: Boolean) {
+    fun toggleFavorite(breed: CatBreed) {
         viewModelScope.launch {
-            catBreedRepository.updateFavoriteStatus(breedName, isFavorite)
+            val updatedIsFavorite = !breed.isFavourite
+            catBreedRepository.updateFavoriteStatus(breed.id, updatedIsFavorite)
+
+            val updatedCatBreeds = uiState.value.catBreeds.map {
+                if (it.id == breed.id) {
+                    it.copy(isFavourite = updatedIsFavorite)
+                } else {
+                    it
+                }
+            }
+
+            _uiState.value = uiState.value.copy(catBreeds = updatedCatBreeds)
+
+            Log.d(
+                "OverviewViewModel",
+                "Ui State Value Favourite: ${_uiState.value.catBreeds.find { it.id == breed.id }?.isFavourite}"
+            )
         }
     }
 

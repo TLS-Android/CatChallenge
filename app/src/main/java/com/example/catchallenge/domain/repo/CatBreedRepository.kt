@@ -11,7 +11,6 @@ interface CatBreedRepository {
     suspend fun updateFavoriteStatus(breedId: String, isFavorite: Boolean)
     suspend fun getFavouriteCatBreeds(): Flow<List<CatBreedEntity>>
 
-
     suspend fun persistCatBreeds(catBreeds: List<CatBreed>)
     suspend fun updateCatBreed(updatedCatBreed: CatBreed)
     //TODO: Operations regarding favourites

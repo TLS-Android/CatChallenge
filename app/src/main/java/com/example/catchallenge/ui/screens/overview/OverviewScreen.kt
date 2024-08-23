@@ -47,7 +47,6 @@ fun OverviewScreen(
     viewModel: OverviewViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    //Log.d("OverviewScreen", "UiState: $uiState")
     var isLoading by remember { mutableStateOf(true) }
 
     if (isLoading) {
@@ -112,7 +111,9 @@ fun OverviewScreen(
                         index,
                         breed,
                         isFavorite = false,
-                        onFavoriteClick = {},
+                        onFavoriteClick = {
+                            viewModel.toggleFavorite(breed)
+                        },
                         navController = navController
                     )
                 }

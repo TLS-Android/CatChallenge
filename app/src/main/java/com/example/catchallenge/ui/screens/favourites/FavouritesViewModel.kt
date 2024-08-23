@@ -1,11 +1,8 @@
 package com.example.catchallenge.ui.screens.favourites
 
-import androidx.activity.result.launch
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.catchallenge.domain.model.CatBreed
-import com.example.catchallenge.domain.model.CatBreedImageData
 import com.example.catchallenge.domain.repo.CatBreedRepository
 import com.example.catchallenge.domain.repo.toCatBreed
 import dagger.hilt.android.lifecycle.HiltViewModel
