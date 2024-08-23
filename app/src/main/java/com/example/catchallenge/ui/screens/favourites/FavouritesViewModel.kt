@@ -33,7 +33,6 @@ class FavouritesViewModel @Inject constructor(
     private fun updateUiState() {
         _uiState.value = FavoritesUIState(
             favoriteCatBreeds = uiState.value.favoriteCatBreeds,
-            searchQuery = "",
             isLoading = false,
             error = null
         )
@@ -80,7 +79,6 @@ class FavouritesViewModel @Inject constructor(
 
 data class FavoritesUIState(
     val favoriteCatBreeds: List<CatBreed> = emptyList(),
-    val searchQuery: String = "",
     val isLoading: Boolean = false,
     val error: String? = null
 )
